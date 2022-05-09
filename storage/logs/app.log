@@ -1,2 +1,20 @@
 2022/05/09 18:49:41 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652093381759292118}
 2022/05/09 19:32:43 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652095963939206221}
+2022/05/09 20:20:06 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652098806761651840}
+2022/05/09 20:21:54 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652098914687977517}
+2022/05/09 20:25:30 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652099130189415043}
+2022/05/09 20:25:47 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652099147907071629}
+2022/05/09 20:26:54 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652099214138909020}
+2022/05/09 20:27:56 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652099276936115794}
+2022/05/09 20:42:26 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652100146042744888}
+2022/05/09 20:44:34 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652100274415604983}
+2022/05/09 20:44:49 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652100289103787583}
+2022/05/09 20:45:16 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652100316937206238}
+2022/05/09 20:45:48 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652100348976001421}
+2022/05/09 20:45:50 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"error","message":"app.BindAndValid errs: Token为必填字段","time":1652100350493875416}
+2022/05/09 20:46:02 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652100362888382126}
+2022/05/09 20:46:06 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"error","message":"app.BindAndValid errs: Token为必填字段","time":1652100366454694859}
+2022/05/09 22:44:19 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652107459325833722}
+2022/05/09 22:59:06 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652108346969617141}
+2022/05/09 22:59:41 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652108381755748002}
+2022/05/09 22:59:44 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"app.BindAndValid errs: Token为必填字段","span_id":"19ae25c01e6a27ed","time":1652108384464720098,"trace_id":"19ae25c01e6a27ed"}

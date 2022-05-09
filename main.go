@@ -8,8 +8,11 @@ import (
 	"simple-demo/global"
 	"simple-demo/internal/model"
 	"simple-demo/internal/routers"
+
 	"simple-demo/pkg/logger"
 	"simple-demo/pkg/setting"
+
+	"simple-demo/pkg/tracer"
 	"strings"
 	"time"
 
@@ -44,10 +47,10 @@ func init() {
 	// if err != nil {
 	// 	log.Fatalf("init.setupValidator err: %v", err)
 	// }
-	// err = setupTracer()
-	// if err != nil {
-	// 	log.Fatalf("init.setupTracer err: %v", err)
-	// }
+	err = setupTracer()
+	if err != nil {
+		log.Fatalf("init.setupTracer err: %v", err)
+	}
 }
 
 func main() {
@@ -138,11 +141,11 @@ func setupDBEngine() error {
 // 	return nil
 // }
 
-// func setupTracer() error {
-// 	jaegerTracer, _, err := tracer.NewJaegerTracer("blog-service", "127.0.0.1:6831")
-// 	if err != nil {
-// 		return err
-// 	}
-// 	global.Tracer = jaegerTracer
-// 	return nil
-// }
+func setupTracer() error {
+	jaegerTracer, _, err := tracer.NewJaegerTracer("simple_demo_tictok", "127.0.0.1:6831")
+	if err != nil {
+		return err
+	}
+	global.Tracer = jaegerTracer
+	return nil
+}

@@ -1,8 +1,13 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
+	"simple-demo/global"
 	"simple-demo/internal/model"
+	"simple-demo/internal/service"
+	"simple-demo/pkg/app"
+	"simple-demo/pkg/errcode"
 	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
@@ -79,15 +84,24 @@ func Login(c *gin.Context) {
 }
 
 func UserInfo(c *gin.Context) {
-	token := c.Query("token")
+	req := service.UserInfoRequest{}
+	response := app.NewResponse(c)
+	valid, errs := app.BindAndValid(c, &req)
+	if !valid {
+		fmt.Println(errs)
+		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
+		errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+		response.ToErrorResponse(errRsp)
+		return
+	}
 
-	if user, exist := usersLoginInfo[token]; exist {
-		c.JSON(http.StatusOK, UserInfoResponse{
+	if user, exist := usersLoginInfo[req.Token]; exist {
+		response.ToResponse(UserInfoResponse{
 			Response: Response{StatusCode: 0},
 			User:     user,
 		})
 	} else {
-		c.JSON(http.StatusOK, UserInfoResponse{
+		response.ToResponse(UserInfoResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
 		})
 	}

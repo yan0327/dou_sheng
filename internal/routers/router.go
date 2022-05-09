@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"simple-demo/internal/middleware"
 	"simple-demo/internal/routers/api"
 
 	"github.com/gin-gonic/gin"
@@ -8,8 +9,7 @@ import (
 
 func NewRouter() *gin.Engine {
 	r := gin.Default()
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+	regisMiddleWare(r)
 
 	r.Static("/static", "./public/static")
 
@@ -36,4 +36,11 @@ func NewRouter() *gin.Engine {
 	}
 
 	return r
+}
+
+func regisMiddleWare(r *gin.Engine) {
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+	r.Use(middleware.Translations())
+	r.Use(middleware.Tracing())
 }
