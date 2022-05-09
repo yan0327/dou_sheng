@@ -29,7 +29,7 @@ type UserLoginResponse struct {
 	Token  string `json:"token"`
 }
 
-type UserResponse struct {
+type UserInfoResponse struct {
 	Response
 	User model.User `json:"user"`
 }
@@ -82,12 +82,12 @@ func UserInfo(c *gin.Context) {
 	token := c.Query("token")
 
 	if user, exist := usersLoginInfo[token]; exist {
-		c.JSON(http.StatusOK, UserResponse{
+		c.JSON(http.StatusOK, UserInfoResponse{
 			Response: Response{StatusCode: 0},
 			User:     user,
 		})
 	} else {
-		c.JSON(http.StatusOK, UserResponse{
+		c.JSON(http.StatusOK, UserInfoResponse{
 			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
 		})
 	}

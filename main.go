@@ -1,15 +1,19 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 	"net/http"
 	"simple-demo/global"
 	"simple-demo/internal/model"
 	"simple-demo/internal/routers"
+	"simple-demo/pkg/logger"
 	"simple-demo/pkg/setting"
 	"strings"
 	"time"
+
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var (
@@ -28,10 +32,10 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupSetting err: %v", err)
 	}
-	// err = setupLogger()
-	// if err != nil {
-	// 	log.Fatalf("init.setupLogger err: %v", err)
-	// }
+	err = setupLogger()
+	if err != nil {
+		log.Fatalf("init.setupLogger err: %v", err)
+	}
 	err = setupDBEngine()
 	if err != nil {
 		log.Fatalf("init.setupDBEngine err: %v", err)
@@ -54,6 +58,7 @@ func main() {
 		ReadTimeout:  global.ServerSetting.ReadTimeout,
 		WriteTimeout: global.ServerSetting.WriteTimeout,
 	}
+	global.Logger.Info(context.Background(), "启动抖音APP服务")
 	log.Println("启动抖音APP服务")
 	s.ListenAndServe()
 }
@@ -103,17 +108,17 @@ func setupSetting() error {
 	return nil
 }
 
-// func setupLogger() error {
-// 	fileName := global.AppSetting.LogSavePath + "/" + global.AppSetting.LogFileName + global.AppSetting.LogFileExt
-// 	global.Logger = logger.NewLogger(&lumberjack.Logger{
-// 		Filename:  fileName,
-// 		MaxSize:   500,
-// 		MaxAge:    10,
-// 		LocalTime: true,
-// 	}, "", log.LstdFlags).WithCaller(2)
+func setupLogger() error {
+	fileName := global.AppSetting.LogSavePath + "/" + global.AppSetting.LogFileName + global.AppSetting.LogFileExt
+	global.Logger = logger.NewLogger(&lumberjack.Logger{
+		Filename:  fileName,
+		MaxSize:   500,
+		MaxAge:    10,
+		LocalTime: true,
+	}, "", log.LstdFlags).WithCaller(2)
 
-// 	return nil
-// }
+	return nil
+}
 
 func setupDBEngine() error {
 	var err error

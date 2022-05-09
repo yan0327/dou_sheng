@@ -1,6 +1,7 @@
 package global
 
 import (
+	"simple-demo/pkg/logger"
 	"simple-demo/pkg/setting"
 )
 
@@ -9,5 +10,5 @@ var (
 	AppSetting      *setting.AppSettingS
 	JWTSetting      *setting.JWTSettingS
 	DatabaseSetting *setting.DatabaseSettingS
-	// Logger          *logger.Logger
+	Logger          *logger.Logger
 )

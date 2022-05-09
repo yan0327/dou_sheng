@@ -1,0 +1,2 @@
+2022/05/09 18:49:41 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652093381759292118}
+2022/05/09 19:32:43 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 35 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652095963939206221}
