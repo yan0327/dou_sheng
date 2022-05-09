@@ -1,4 +1,4 @@
-package api
+package v1
 
 import "simple-demo/internal/model"
 
