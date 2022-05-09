@@ -11,7 +11,7 @@ func NewRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	r.Static("/static", "./public")
+	r.Static("/static", "./public/static")
 
 	apiRouter := r.Group("/douyin")
 	{
