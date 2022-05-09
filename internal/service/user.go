@@ -1,11 +1,11 @@
 package service
 
 type UserLoginRequest struct {
-	UserName string `json:"user_name,omitempty"`
-	PassWord string `json:"password, omitempty`
+	UserName string `json:"username" binding:"required, max=32"`
+	PassWord string `json:"password" binding:"required, max=32"`
 }
 
 type UserInfoRequest struct {
-	UserId int64  `json:"user_id,omitempty"`
-	Token  string `json:"token",omitempty"`
+	UserId uint32  `json:"user_id" binding:"required"`
+	Token  string `json:"token" binding:"required"`
 }

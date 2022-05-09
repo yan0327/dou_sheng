@@ -1,20 +1,20 @@
 package service
 
 type RelationRequest struct {
-	UserId     int64  `json:"user_id,omitempty"`
-	Token      string `json:"token",omitempty"`
-	ToUserId   int64  `json:"to_user_id",omitempty"`
-	ActionType int    `json:"action_type",omitempty"`
+	UserId     uint32  `form:"user_id" binding:"required"`
+	Token      string `form:"token" binding:"required"`
+	ToUserId   uint32  `form:"to_user_id" binding:"required"`
+	ActionType uint8    `form:"action_type" binding:"required, oneof= 1 2"`
 }
 
 //关注列表
 type FollowListRequest struct {
-	UserId int64  `json:"user_id,omitempty"`
-	Token  string `json:"token",omitempty"`
+	UserId uint32  `form:"user_id" binding:"required"`
+	Token  string `form:"token" binding:"required"`
 }
 
 //粉丝列表
 type FollowerListRequest struct {
-	UserId int64  `json:"user_id,omitempty"`
-	Token  string `json:"token",omitempty"`
+	UserId uint32  `form:"user_id" binding:"required"`
+	Token  string `form:"token" binding:"required"`
 }

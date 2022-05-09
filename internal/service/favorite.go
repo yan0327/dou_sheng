@@ -1,14 +1,13 @@
 package service
 
 type FavoriteRequest struct {
-	UserId     int64  `json:"user_id, omitempty"`
-	Token      string `json:"token, omitempty"`
-	VideoId    int64  `json:"video_id,omitempty"`
-	ActionType int    `json:"action_type, omitempty"`
+	UserId     uint32  `form:"user_id" binding:"required"`
+	Token      string `form:"token" binding:"required"`
+	VideoId    uint32  `form:"video_id" binding:"required"`
+	ActionType int    `form:"action_type" binding:"required, oneof= 1 2"`
 }
 
 type FavoriteListRequest struct {
-	UserId int64  `json:"user_id, omitempty"`
-	Token  string `json:"token, omitempty"`
+	UserId uint32  `form:"user_id" binding:"required"`
+	Token  string `form:"token" binding:"required"`
 }
-
