@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	"simple-demo/global"
 	"simple-demo/internal/model"
@@ -88,7 +87,6 @@ func UserInfo(c *gin.Context) {
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &req)
 	if !valid {
-		fmt.Println(errs)
 		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
 		errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
 		response.ToErrorResponse(errRsp)
