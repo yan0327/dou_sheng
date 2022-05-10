@@ -28,9 +28,9 @@ JWT:
 Database:
   DBType: mysql
   UserName: root
-  Password: 12345678
+  Password: 123456
   Host: 127.0.0.1:3306
-  DBName: TikTok
+  DBName: tiktok
   TablePrefix: tiktok_
   Charset: utf8
   ParseTime: True
