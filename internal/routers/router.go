@@ -5,6 +5,8 @@ import (
 	"simple-demo/global"
 	"simple-demo/internal/middleware"
 	v1 "simple-demo/internal/routers/api/v1"
+	"simple-demo/pkg/limiter"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,30 +21,66 @@ func NewRouter() *gin.Engine {
 	{
 		// basic apis
 		apiRouter.GET("/feed/", v1.Feed)
-		apiRouter.GET("/user/", v1.UserInfo)
+		apiRouter.GET("/user/", middleware.JWT(), v1.UserInfo) //token
 		apiRouter.POST("/user/register/", v1.Register)
 		apiRouter.POST("/user/login/", v1.Login)
-		apiRouter.POST("/publish/action/", v1.Publish)
-		apiRouter.GET("/publish/list/", v1.PublishList)
+
+		publishRouter := apiRouter.Group("/publish")
+		publishRouter.Use(middleware.JWT())
+		{
+			publishRouter.POST("/action/", v1.Publish)  //token
+			publishRouter.GET("/list/", v1.PublishList) //token
+		}
 
 		// extra apis - I
-		apiRouter.POST("/favorite/action/", v1.FavoriteAction)
-		apiRouter.GET("/favorite/list/", v1.FavoriteList)
-		apiRouter.POST("/comment/action/", v1.CommentAction)
-		apiRouter.GET("/comment/list/", v1.CommentList)
+		//token
+		favoriteRouter := apiRouter.Group("/favorite")
+		favoriteRouter.Use(middleware.JWT())
+		{
+			favoriteRouter.POST("/action/", v1.FavoriteAction)
+			favoriteRouter.GET("/list/", v1.FavoriteList)
+		}
+
+		commentRouter := apiRouter.Group("/comment")
+		commentRouter.Use(middleware.JWT())
+		{
+			commentRouter.POST("/action/", v1.CommentAction)
+			commentRouter.GET("/list/", v1.CommentList)
+		}
 
 		// extra apis - II
-		apiRouter.POST("/relation/action/", v1.RelationAction)
-		apiRouter.GET("/relation/follow/list/", v1.FollowList)
-		apiRouter.GET("/relation/follower/list/", v1.FollowerList)
+		//token
+		relationRouter := apiRouter.Group("/relation")
+		relationRouter.Use(middleware.JWT())
+		{
+			relationRouter.POST("/action/", v1.RelationAction)
+			relationRouter.GET("/follow/list/", v1.FollowList)
+			relationRouter.GET("/follower/list/", v1.FollowerList)
+		}
+
 	}
 
 	return r
 }
 
+var methodLimiters = limiter.NewMethodLimiter().AddBuckets(
+	limiter.LimiterBucketRule{
+		Key:          "/tiktok_auth", //限制请求的key
+		FillInterval: 120 * time.Second,
+		Capacity:     10,
+		Quantum:      10,
+	},
+)
+
 func regisMiddleWare(r *gin.Engine) {
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+	if global.ServerSetting.RunMode == "debug" {
+		r.Use(gin.Logger())
+		r.Use(gin.Recovery())
+	} else {
+		r.Use(middleware.AccessLog())
+		r.Use(middleware.Recovery())
+	}
+
 	r.Use(middleware.Translations())
 	r.Use(middleware.Tracing())
 }

@@ -11,4 +11,5 @@ var (
 	JWTSetting      *setting.JWTSettingS
 	DatabaseSetting *setting.DatabaseSettingS
 	Logger          *logger.Logger
+	LimiterSetting  *setting.LimiterSettingS
 )

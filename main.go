@@ -97,10 +97,17 @@ func setupSetting() error {
 		return err
 	}
 
+	// err = s.ReadSection("Limiter", &global.LimiterSetting)
+	// if err != nil {
+	// 	return err
+	// }
+
 	global.AppSetting.DefaultContextTimeout *= time.Second
 	global.JWTSetting.Expire *= time.Second
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
+	// global.LimiterSetting.ContextTimeOut *= time.Second
+
 	if port != "" {
 		global.ServerSetting.HttpPort = port
 	}
@@ -149,3 +156,12 @@ func setupTracer() error {
 	global.Tracer = jaegerTracer
 	return nil
 }
+
+// func setupLimiter() error {
+// 	jaegerTracer, _, err := tracer.NewJaegerTracer("simple_demo_tictok", "127.0.0.1:6831")
+// 	if err != nil {
+// 		return err
+// 	}
+// 	global.Tracer = jaegerTracer
+// 	return nil
+// }

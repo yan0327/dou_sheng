@@ -43,6 +43,10 @@ type DatabaseSettingS struct {
 	MaxOpenConns int
 }
 
+type LimiterSettingS struct {
+	ContextTimeOut time.Duration
+}
+
 var sections = make(map[string]interface{})
 
 func (s *Setting) ReadSection(k string, v interface{}) error {

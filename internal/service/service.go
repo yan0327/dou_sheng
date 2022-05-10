@@ -13,6 +13,7 @@ type Service struct {
 
 func New(ctx context.Context) Service {
 	svc := Service{ctx: ctx}
+	// svc.dao = dao.NewDao(otgorm.WithContext(svc.ctx, global.DBEngine))
 	svc.dao = dao.NewDao(global.DBEngine)
 	return svc
 }

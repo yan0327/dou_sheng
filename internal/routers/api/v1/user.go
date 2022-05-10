@@ -39,34 +39,58 @@ type UserInfoResponse struct {
 }
 
 func Register(c *gin.Context) {
+	response := app.NewResponse(c)
+
 	username := c.Query("username")
 	password := c.Query("password")
 
-	token := username + password
-
-	if _, exist := usersLoginInfo[token]; exist {
-		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 1, StatusMsg: "User already exist"},
-		})
-	} else {
-		atomic.AddInt64(&userIdSequence, 1)
-		newUser := model.User{
-			Id:   userIdSequence,
-			Name: username,
-		}
-		usersLoginInfo[token] = newUser
-		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 0},
-			UserId:   userIdSequence,
-			Token:    username + password,
-		})
+	/*
+		1.写入数据库
+		2. 签发token
+	*/
+	token, err := app.GenerateToken(username, password)
+	if err != nil {
+		global.Logger.Errorf(c, "app.GenerateToken err: %v", err)
+		response.ToErrorResponse(errcode.UnauthorizedTokenGenerate)
+		return
 	}
+
+	atomic.AddInt64(&userIdSequence, 1)
+	newUser := model.User{
+		Id:   userIdSequence,
+		Name: username,
+	}
+	usersLoginInfo[token] = newUser
+	c.JSON(http.StatusOK, UserLoginResponse{
+		Response: Response{StatusCode: 0},
+		UserId:   userIdSequence,
+		Token:    username + password,
+	})
+
 }
 
 func Login(c *gin.Context) {
 	username := c.Query("username")
 	password := c.Query("password")
+	/*
+		1. 数据库校验密码是否正确
+		2. 如果正确则签发token
+		3. 根据username and password 签发token时需要对密码进行加密处理,JWT可以被反向破解
+	*/
+	// svc := service.New(c.Request.Context())
+	// err := svc.CheckAuth(&param)
+	// if err != nil {
+	// 	global.Logger.Errorf(c, "svc.CheckAuth err: %v", err)
+	// 	response.ToErrorResponse(errcode.UnauthorizedAuthNotExist)
+	// 	return
+	// }
 
+	// token, err := app.GenerateToken(param.AppKey, param.AppSecret)
+	// if err != nil {
+	// 	global.Logger.Errorf(c, "app.GenerateToken err: %v", err)
+	// 	response.ToErrorResponse(errcode.UnauthorizedTokenGenerate)
+	// 	return
+	// }
 	token := username + password
 
 	if user, exist := usersLoginInfo[token]; exist {
