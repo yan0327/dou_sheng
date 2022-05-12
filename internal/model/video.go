@@ -13,6 +13,7 @@ type Video struct {
 	PlayUrl  string `json:"play_url,omitempty" gorm:"column:play_url"`
 	CoverUrl string `json:"cover_url,omitempty" gorm:"column:cover_url"`
 
+	User          *User
 	FavoriteCount int64 `json:"favorite_count,omitempty"`
 	CommentCount  int64 `json:"comment_count,omitempty"`
 	IsFavorite    bool  `json:"is_favorite,omitempty"`
@@ -26,6 +27,12 @@ type VideoPush struct {
 	PlayUrl  string `gorm:"column:play_url"`
 	CoverUrl string `gorm:"column:cover_url"`
 	UserName string `gorm:"-"`
+}
+
+type Favorite struct {
+	UserId     uint32 `gorm:"column:user_id"`
+	VideoId    uint32 `gorm:"column:video_id"`
+	ActionType int    `gorm:"column:action_type"`
 }
 
 func (this Video) TableName() string {
@@ -48,9 +55,22 @@ func (this *VideoPush) Publish(db *gorm.DB) error {
 		return err
 	}
 	this.AuthorId = user.ID
-	err = db.Table("tiktok_video").Create(&this).Error
+	err = db.Table("tiktok_video").Create(this).Error
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (this *Favorite) FavoriteAction(db *gorm.DB) error {
+	fav := Favorite{}
+	err := db.Table("tiktok_video_like").Where("user_id = ? AND video_id = ?", this.UserId, this.VideoId).First(&fav).Error
+	if err == nil && fav.ActionType != this.ActionType {
+		db.Table("tiktok_video_like").Where("user_id = ? AND video_id = ?", this.UserId, this.VideoId).Update("action_type", this.ActionType)
+	}
+	if err == gorm.ErrRecordNotFound {
+		err := db.Table("tiktok_video_like").Create(this).Error
+		return err
+	}
+	return err
 }

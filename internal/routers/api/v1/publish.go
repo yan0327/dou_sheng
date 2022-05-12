@@ -40,11 +40,23 @@ func Publish(c *gin.Context) {
 
 // PublishList all users have same publish video list
 func PublishList(c *gin.Context) {
+	// params := service.PublishListRequest{}
+	// response := app.NewResponse(c)
+	// valid, errs := app.BindAndValid(c, &params)
+	// if !valid {
+	// 	global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
+	// 	errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+	// 	response.ToErrorResponse(errRsp)
+	// 	return
+	// }
 
-	// c.JSON(http.StatusOK, VideoListResponse{
-	// 	Response: Response{
-	// 		StatusCode: 0,
-	// 	},
-	// 	// VideoList: DemoVideos,
-	// })
+	// svc := service.New(c.Request.Context())
+	// respond, err := svc.PublishList(&params)
+	// if err != nil {
+	// 	global.Logger.Errorf(c, "svc.PublishList err: %v", err)
+	// 	response.ToErrorResponse(errcode.PublishListError)
+	// 	return
+	// }
+
+	// c.JSON(http.StatusOK, respond)
 }

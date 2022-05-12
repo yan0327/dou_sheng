@@ -14,7 +14,6 @@ type PublishRequest struct {
 	Token      string
 	File       multipart.File
 	FileHeader *multipart.FileHeader
-	FileType   upload.FileType
 }
 
 type PublishListRequest struct {
@@ -58,5 +57,9 @@ func (svc *Service) Publish(params *PublishRequest) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
+	return nil, nil
+}
+
+func (svc *Service) PublishList(params *PublishListRequest) (*VideoListResponse, error) {
 	return nil, nil
 }

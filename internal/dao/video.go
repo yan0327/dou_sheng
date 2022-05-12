@@ -17,3 +17,12 @@ func (d *Dao) Publish(username string, playUrl string, coverUrl string) error {
 	}
 	return videoPush.Publish(d.engine)
 }
+
+func (d *Dao) FavoriteAction(userId uint32, videoId uint32, actionType int) error {
+	favorite := model.Favorite{
+		UserId:     userId,
+		VideoId:    videoId,
+		ActionType: actionType,
+	}
+	return favorite.FavoriteAction(d.engine)
+}

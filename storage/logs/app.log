@@ -99,3 +99,8 @@
 2022/05/12 22:57:01 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652367421149570797}
 2022/05/12 23:08:22 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652368102219687406}
 2022/05/12 23:08:51 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.Publish err: file suffix is not supported.","span_id":"603a9e626269d6d1","time":1652368131893807914,"trace_id":"603a9e626269d6d1"}
+2022/05/12 23:44:35 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652370275914921911}
+2022/05/12 23:47:51 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652370471822691896}
+2022/05/12 23:51:16 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652370676533275750}
+2022/05/12 23:51:48 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652370708653416622}
+2022/05/12 23:52:23 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"app.BindAndValid errs: ActionType为必填字段","span_id":"5335348ea34f3859","time":1652370743599851503,"trace_id":"5335348ea34f3859"}
