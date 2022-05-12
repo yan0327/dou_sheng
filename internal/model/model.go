@@ -6,7 +6,6 @@ import (
 	"simple-demo/pkg/setting"
 	"time"
 
-	otgorm "github.com/eddycjy/opentracing-gorm"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -16,15 +15,16 @@ const (
 	STATE_CLOSE = 0
 )
 
-type Model struct {
-	ID         uint32 `gorm:"primary_key" json:"id"`
-	CreatedBy  string `json:"created_by"`
-	ModifiedBy string `json:"modified_by"`
-	CreatedOn  uint32 `json:"created_on"`
-	ModifiedOn uint32 `json:"modified_on"`
-	DeletedOn  uint32 `json:"deleted_on"`
-	IsDel      uint8  `json:"is_del"`
-}
+// type Model struct {
+// ID uint32 `gorm:"primary_key" json:"id"`
+//CreatedOn  uint32 `json:"created_on"`
+// CreatedBy  string `json:"created_by"`
+// ModifiedBy string `json:"modified_by"`
+
+// ModifiedOn uint32 `json:"modified_on"`
+// DeletedOn  uint32 `json:"deleted_on"`
+// IsDel      uint8  `json:"is_del"`
+// }
 
 func NewDBEngine(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {
 	s := "%s:%s@tcp(%s)/%s?charset=%s&parseTime=%t&loc=Local"
@@ -44,12 +44,12 @@ func NewDBEngine(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {
 		db.LogMode(true)
 	}
 	db.SingularTable(true)
-	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
-	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
-	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
+	// db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+	// db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
+	// db.Callback().Delete().Replace("gorm:delete", deleteCallback)
 	db.DB().SetMaxIdleConns(databaseSetting.MaxIdleConns)
 	db.DB().SetMaxOpenConns(databaseSetting.MaxOpenConns)
-	otgorm.AddGormCallbacks(db)
+	// otgorm.AddGormCallbacks(db)
 	return db, nil
 }
 

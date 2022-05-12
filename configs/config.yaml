@@ -11,8 +11,8 @@ App:
   LogSavePath: storage/logs
   LogFileName: app
   LogFileExt: .log
-  UploadSavePath: storage/uploads
-  UploadServerUrl: http://127.0.0.1:8080/upload
+  UploadSavePath: storage/uploadsVedio
+  UploadServerUrl: http://106.55.103.222:8080/static
   UploadImageMaxSize: 512  # MB
   UploadImageAllowExts:
     - .jpg
@@ -22,7 +22,7 @@ App:
 
 JWT:
   Secret: eddycjy
-  Issuer: blog-service
+  Issuer: tiktok
   Expire: 7200
 
 Database:

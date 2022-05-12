@@ -2,8 +2,11 @@ package v1
 
 import (
 	"net/http"
+	"simple-demo/global"
 	"simple-demo/internal/model"
-	"time"
+	"simple-demo/internal/service"
+	"simple-demo/pkg/app"
+	"simple-demo/pkg/errcode"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,9 +19,22 @@ type FeedResponse struct {
 
 // Feed same demo video list for every request
 func Feed(c *gin.Context) {
-	c.JSON(http.StatusOK, FeedResponse{
-		Response:  Response{StatusCode: 0},
-		VideoList: DemoVideos,
-		NextTime:  time.Now().Unix(),
-	})
+	response := app.NewResponse(c)
+	param := service.FeedRequest{}
+	valid, errs := app.BindAndValid(c, &param)
+	if !valid {
+		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
+		errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+		response.ToErrorResponse(errRsp)
+		return
+	}
+
+	svc := service.New(c.Request.Context())
+	respond, err := svc.ReverseFeed(&param)
+	if err != nil {
+		global.Logger.Errorf(c, "svc.Login err: %v", err)
+		response.ToErrorResponse(errcode.ReverseFeedError)
+		return
+	}
+	c.JSON(http.StatusOK, respond)
 }

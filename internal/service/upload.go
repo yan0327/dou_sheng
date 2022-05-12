@@ -14,11 +14,11 @@ type FileInfo struct {
 }
 
 func (svc *Service) UploadFile(fileType upload.FileType, file multipart.File, fileHeader *multipart.FileHeader) (*FileInfo, error) {
-	fileName := upload.GetFileName(fileHeader.Filename)
-	if !upload.CheckContainExt(fileType, fileName) {
+	fileName := upload.GetFileName(fileHeader.Filename, "")
+	if !upload.CheckContainExt(fileName) {
 		return nil, errors.New("file suffix is not supported.")
 	}
-	if upload.CheckMaxSize(fileType, file) {
+	if upload.CheckMaxSize("", file) {
 		return nil, errors.New("exceeded maximum file limit.")
 	}
 

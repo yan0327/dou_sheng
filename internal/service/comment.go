@@ -17,6 +17,11 @@ type CommentListRequest struct {
 	VideoId uint32 `form:"video_id" binding:"required"`
 }
 
+type CommentListResponse struct {
+	Response
+	CommentList []model.Comment `json:"comment_list,omitempty"`
+}
+
 func (svc *Service) CreateComment(param *CommentRequest) error {
 	return nil
 }

@@ -10,4 +10,9 @@ var (
 	UnauthorizedTokenTimeout  = NewError(10000005, "鉴权失败，Token超时")
 	UnauthorizedTokenGenerate = NewError(10000006, "鉴权失败，Token生成失败")
 	TooManyRequests           = NewError(10000007, "请求过多")
+
+	UserRegisterError = NewError(10000008, "用户注册失败")
+	UserGetInfoError  = NewError(10000009, "获取用户消息失败")
+	ReverseFeedError  = NewError(20000001, "Feed接口视频流查询失败")
+	PublishError      = NewError(20000002, "Publish错误")
 )

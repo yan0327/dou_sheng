@@ -23,3 +23,79 @@
 2022/05/09 23:49:23 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652111363277424655}
 2022/05/10 20:40:36 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652186436113737245}
 2022/05/10 20:41:38 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652186498502186643}
+2022/05/11 22:58:33 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281113845250249}
+2022/05/11 23:00:57 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281257842664169}
+2022/05/11 23:01:00 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1054: Unknown column 'created_by' in 'field list'","span_id":"6041d75ec7a22dc5","time":1652281260767712213,"trace_id":"6041d75ec7a22dc5"}
+2022/05/11 23:02:27 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281347442731211}
+2022/05/11 23:02:33 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1054: Unknown column '' in 'field list'","span_id":"4b3ea7586c47e376","time":1652281353156442680,"trace_id":"4b3ea7586c47e376"}
+2022/05/11 23:03:27 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281407782482922}
+2022/05/11 23:03:30 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1054: Unknown column '' in 'field list'","span_id":"5851b86096e18103","time":1652281410801096664,"trace_id":"5851b86096e18103"}
+2022/05/11 23:04:07 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281447550343377}
+2022/05/11 23:04:09 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1054: Unknown column '' in 'field list'","span_id":"9c29768669fd3c9","time":1652281449551423991,"trace_id":"9c29768669fd3c9"}
+2022/05/11 23:04:22 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281462722830525}
+2022/05/11 23:04:24 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1054: Unknown column '' in 'field list'","span_id":"33f250fbdea76525","time":1652281464600948280,"trace_id":"33f250fbdea76525"}
+2022/05/11 23:04:47 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281487757363332}
+2022/05/11 23:04:49 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1054: Unknown column '' in 'field list'","span_id":"3b1dd4fdc508ce1f","time":1652281489771232292,"trace_id":"3b1dd4fdc508ce1f"}
+2022/05/11 23:06:11 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281571420177565}
+2022/05/11 23:06:13 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1054: Unknown column '' in 'field list'","span_id":"19440523d198e23f","time":1652281573680732446,"trace_id":"19440523d198e23f"}
+2022/05/11 23:06:53 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281613769099730}
+2022/05/11 23:07:09 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1062: Duplicate entry 'dayu' for key 'username'","span_id":"7951c1c35e8bfe64","time":1652281629183925094,"trace_id":"7951c1c35e8bfe64"}
+2022/05/11 23:10:12 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652281812726379054}
+2022/05/11 23:15:17 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652282117034300266}
+2022/05/11 23:18:12 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652282292468044718}
+2022/05/11 23:18:15 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1062: Duplicate entry 'dayu1' for key 'username'","span_id":"7f85cfe0afe20344","time":1652282295289734290,"trace_id":"7f85cfe0afe20344"}
+2022/05/11 23:23:06 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652282586705459354}
+2022/05/11 23:30:50 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652283050636807391}
+2022/05/12 00:04:04 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652285044811577828}
+2022/05/12 18:34:43 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652351683747839983}
+2022/05/12 18:35:05 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.Login err: Error 1054: Unknown column 'created_at' in 'where clause'","span_id":"54d2bbdef2ba9800","time":1652351705069624853,"trace_id":"54d2bbdef2ba9800"}
+2022/05/12 18:36:50 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652351810181991160}
+2022/05/12 18:38:29 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652351909462971097}
+2022/05/12 18:48:33 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652352513472043651}
+2022/05/12 18:49:18 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652352558564410028}
+2022/05/12 19:15:37 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652354137345772863}
+2022/05/12 19:19:24 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652354364175232078}
+2022/05/12 19:27:50 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652354870970222024}
+2022/05/12 19:28:52 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"app.BindAndValid errs: UserId为必填字段","span_id":"1d4e5385c71ddb8a","time":1652354932938033991,"trace_id":"1d4e5385c71ddb8a"}
+2022/05/12 19:49:55 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652356195196763241}
+2022/05/12 19:49:59 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.UserInfo err: sql: expected 1 arguments, got 2","span_id":"65494966de34b488","time":1652356199609699744,"trace_id":"65494966de34b488"}
+2022/05/12 19:51:09 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652356269340067132}
+2022/05/12 19:53:06 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652356386152989546}
+2022/05/12 19:53:54 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652356434282073710}
+2022/05/12 19:54:43 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.CreateTag err: Error 1054: Unknown column 'follow_count' in 'field list'","span_id":"1b024515ee287ea2","time":1652356483919315958,"trace_id":"1b024515ee287ea2"}
+2022/05/12 19:55:41 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652356541456369725}
+2022/05/12 20:34:44 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652358884219717720}
+2022/05/12 20:35:58 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652358958342572133}
+2022/05/12 20:43:14 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652359394574892015}
+2022/05/12 20:46:55 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652359615923802232}
+2022/05/12 21:12:13 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652361133391863809}
+2022/05/12 21:22:58 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652361778808192139}
+2022/05/12 21:32:40 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652362360920217328}
+2022/05/12 21:34:28 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652362468627281392}
+2022/05/12 21:35:31 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652362531562030773}
+2022/05/12 21:39:17 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652362757781439389}
+2022/05/12 21:42:21 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652362941965344422}
+2022/05/12 21:45:08 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652363108814882415}
+2022/05/12 21:49:30 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652363370611975076}
+2022/05/12 21:50:51 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652363451966440194}
+2022/05/12 21:50:55 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"app.ParseToken err: token contains an invalid number of segments","span_id":"65b5c7f74b36ed69","time":1652363455663860518,"trace_id":"65b5c7f74b36ed69"}
+2022/05/12 21:52:11 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"app.ParseToken err: token contains an invalid number of segments","span_id":"589e6c751b06dd65","time":1652363531411789223,"trace_id":"589e6c751b06dd65"}
+2022/05/12 21:52:22 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"app.ParseToken err: token contains an invalid number of segments","span_id":"488daa6b1ffd2e74","time":1652363542600678924,"trace_id":"488daa6b1ffd2e74"}
+2022/05/12 21:52:49 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"app.ParseToken err: token contains an invalid number of segments","span_id":"4f907ac8f37f19f1","time":1652363569875360237,"trace_id":"4f907ac8f37f19f1"}
+2022/05/12 21:53:07 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652363587685108461}
+2022/05/12 21:58:17 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652363897396049759}
+2022/05/12 21:58:58 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652363938679346815}
+2022/05/12 22:02:11 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652364131316710970}
+2022/05/12 22:40:21 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652366421587523183}
+2022/05/12 22:42:04 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652366524122932996}
+2022/05/12 22:44:32 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652366672407849338}
+2022/05/12 22:51:52 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652367112534373728}
+2022/05/12 22:52:10 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.Publish err: token 不存在","span_id":"13bf43b78eb35abc","time":1652367130483103543,"trace_id":"13bf43b78eb35abc"}
+2022/05/12 22:52:37 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652367157828405192}
+2022/05/12 22:53:38 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652367218088663458}
+2022/05/12 22:53:42 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.Publish err: token 不存在","span_id":"5d059cb43eabc9e8","time":1652367222264538311,"trace_id":"5d059cb43eabc9e8"}
+2022/05/12 22:54:28 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.Publish err: token 不存在","span_id":"5e0dae353f4e4843","time":1652367268918938941,"trace_id":"5e0dae353f4e4843"}
+2022/05/12 22:55:44 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652367344202705016}
+2022/05/12 22:57:01 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652367421149570797}
+2022/05/12 23:08:22 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1652368102219687406}
+2022/05/12 23:08:51 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.Publish err: file suffix is not supported.","span_id":"603a9e626269d6d1","time":1652368131893807914,"trace_id":"603a9e626269d6d1"}
