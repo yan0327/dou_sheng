@@ -63,7 +63,9 @@ func main() {
 	}
 	global.Logger.Info(context.Background(), "启动抖音APP服务")
 	log.Println("启动抖音APP服务")
-	s.ListenAndServe()
+	if err := s.ListenAndServe(); err != nil {
+		panic(err)
+	}
 }
 
 func setupFlag() error {
