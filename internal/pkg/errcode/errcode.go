@@ -55,7 +55,7 @@ func (e *Error) WithDetails(details ...string) *Error {
 }
 
 //自定义错误码到HTTP状态码转换
-func (e *Error) StatusCode() int {
+func (e *Error) HTTPStatus() int {
 	switch e.Code() {
 	case Success.Code():
 		return http.StatusOK

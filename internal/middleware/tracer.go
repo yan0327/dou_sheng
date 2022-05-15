@@ -1,6 +1,5 @@
 package middleware
 
-import "C"
 import (
 	"context"
 	"simple-demo/global"

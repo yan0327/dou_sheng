@@ -1,12 +1,11 @@
 package routers
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"simple-demo/global"
 	"simple-demo/internal/middleware"
-	v1 "simple-demo/internal/routers/api/v1"
-
-	"github.com/gin-gonic/gin"
+	"simple-demo/internal/routers/api"
 )
 
 func NewRouter() *gin.Engine {
@@ -18,23 +17,23 @@ func NewRouter() *gin.Engine {
 	apiRouter := r.Group("/douyin")
 	{
 		// basic apis
-		apiRouter.GET("/feed/", v1.Feed)
-		apiRouter.GET("/user/", v1.UserInfo)
-		apiRouter.POST("/user/register/", v1.Register)
-		apiRouter.POST("/user/login/", v1.Login)
-		apiRouter.POST("/publish/action/", v1.Publish)
-		apiRouter.GET("/publish/list/", v1.PublishList)
+		apiRouter.GET("/feed/", api.Feed)
+		apiRouter.GET("/user/", api.UserInfo)
+		apiRouter.POST("/user/register/", api.Register)
+		apiRouter.POST("/user/login/", api.Login)
+		apiRouter.POST("/publish/action/", api.Publish)
+		apiRouter.GET("/publish/list/", api.PublishList)
 
 		// extra apis - I
-		apiRouter.POST("/favorite/action/", v1.FavoriteAction)
-		apiRouter.GET("/favorite/list/", v1.FavoriteList)
-		apiRouter.POST("/comment/action/", v1.CommentAction)
-		apiRouter.GET("/comment/list/", v1.CommentList)
+		apiRouter.POST("/favorite/action/", api.FavoriteAction)
+		apiRouter.GET("/favorite/list/", api.FavoriteList)
+		apiRouter.POST("/comment/action/", api.CommentAction)
+		apiRouter.GET("/comment/list/", api.CommentList)
 
 		// extra apis - II
-		apiRouter.POST("/relation/action/", v1.RelationAction)
-		apiRouter.GET("/relation/follow/list/", v1.FollowList)
-		apiRouter.GET("/relation/follower/list/", v1.FollowerList)
+		apiRouter.POST("/relation/action/", api.RelationAction)
+		apiRouter.GET("/relation/follow/list/", api.FollowList)
+		apiRouter.GET("/relation/follower/list/", api.FollowerList)
 	}
 
 	return r

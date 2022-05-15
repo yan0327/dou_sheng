@@ -2,10 +2,10 @@ package api
 
 import (
 	"simple-demo/global"
+	"simple-demo/internal/pkg/api"
+	errcode2 "simple-demo/internal/pkg/errcode"
 	"simple-demo/internal/service"
-	"simple-demo/pkg/app"
 	"simple-demo/pkg/convert"
-	"simple-demo/pkg/errcode"
 	"simple-demo/pkg/upload"
 
 	"github.com/gin-gonic/gin"
@@ -18,16 +18,15 @@ func NewUpload() Upload {
 }
 
 func (u Upload) UploadFile(c *gin.Context) {
-	response := app.NewResponse(c)
 	file, fileHeader, err := c.Request.FormFile("file")
 	if err != nil {
-		response.ToErrorResponse(errcode.InvalidParams.WithDetails(err.Error()))
+		api.RespWithErr(c, errcode2.InvalidParams.WithDetails(err.Error()))
 		return
 	}
 
 	fileType := convert.StrTo(c.PostForm("type")).MustInt()
 	if fileHeader == nil || fileType <= 0 {
-		response.ToErrorResponse(errcode.InvalidParams)
+		api.RespWithErr(c, errcode2.InvalidParams)
 		return
 	}
 
@@ -35,11 +34,11 @@ func (u Upload) UploadFile(c *gin.Context) {
 	fileInfo, err := svc.UploadFile(upload.FileType(fileType), file, fileHeader)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.UploadFile err: %v", err)
-		response.ToErrorResponse(errcode.ErrorUploadFileFail.WithDetails(err.Error()))
+		api.RespWithErr(c, errcode2.ErrorUploadFileFail.WithDetails(err.Error()))
 		return
 	}
 
-	response.ToResponse(gin.H{
+	api.RespWithData(c, gin.H{
 		"file_access_url": fileInfo.AccessUrl,
 	})
 }

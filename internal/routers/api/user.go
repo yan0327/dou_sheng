@@ -1,12 +1,12 @@
-package v1
+package api
 
 import (
-	"net/http"
 	"simple-demo/global"
 	"simple-demo/internal/model"
+	"simple-demo/internal/pkg/api"
+	"simple-demo/internal/pkg/errcode"
 	"simple-demo/internal/service"
 	"simple-demo/pkg/app"
-	"simple-demo/pkg/errcode"
 	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
@@ -27,17 +27,6 @@ var usersLoginInfo = map[string]model.User{
 
 var userIdSequence = int64(1)
 
-type UserLoginResponse struct {
-	Response
-	UserId int64  `json:"user_id,omitempty"`
-	Token  string `json:"token"`
-}
-
-type UserInfoResponse struct {
-	Response
-	User model.User `json:"user"`
-}
-
 func Register(c *gin.Context) {
 	username := c.Query("username")
 	password := c.Query("password")
@@ -45,9 +34,7 @@ func Register(c *gin.Context) {
 	token := username + password
 
 	if _, exist := usersLoginInfo[token]; exist {
-		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 1, StatusMsg: "User already exist"},
-		})
+		api.RespWithErr(c, errcode.ErrorUserExistFail)
 	} else {
 		atomic.AddInt64(&userIdSequence, 1)
 		newUser := model.User{
@@ -55,10 +42,9 @@ func Register(c *gin.Context) {
 			Name: username,
 		}
 		usersLoginInfo[token] = newUser
-		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 0},
-			UserId:   userIdSequence,
-			Token:    username + password,
+		api.RespWithData(c, gin.H{
+			"user_id": userIdSequence,
+			"token":   username + password,
 		})
 	}
 }
@@ -70,37 +56,30 @@ func Login(c *gin.Context) {
 	token := username + password
 
 	if user, exist := usersLoginInfo[token]; exist {
-		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 0},
-			UserId:   user.Id,
-			Token:    token,
+		api.RespWithData(c, gin.H{
+			"user_id": user.Id,
+			"token":   token,
 		})
 	} else {
-		c.JSON(http.StatusOK, UserLoginResponse{
-			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
-		})
+		api.RespWithErr(c, errcode.NotFound)
 	}
 }
 
 func UserInfo(c *gin.Context) {
 	req := service.UserInfoRequest{}
-	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &req)
 	if !valid {
 		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
 		errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
-		response.ToErrorResponse(errRsp)
+		api.RespWithErr(c, errRsp)
 		return
 	}
 
 	if user, exist := usersLoginInfo[req.Token]; exist {
-		response.ToResponse(UserInfoResponse{
-			Response: Response{StatusCode: 0},
-			User:     user,
+		api.RespWithData(c, gin.H{
+			"user": user,
 		})
 	} else {
-		response.ToResponse(UserInfoResponse{
-			Response: Response{StatusCode: 1, StatusMsg: "User doesn't exist"},
-		})
+		api.RespWithErr(c, errcode.NotFound)
 	}
 }

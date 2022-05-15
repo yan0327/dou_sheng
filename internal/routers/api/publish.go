@@ -1,34 +1,26 @@
-package v1
+package api
 
 import (
 	"fmt"
-	"net/http"
 	"path/filepath"
-	"simple-demo/internal/model"
+	"simple-demo/internal/pkg/api"
+	"simple-demo/internal/pkg/errcode"
 
 	"github.com/gin-gonic/gin"
 )
-
-type VideoListResponse struct {
-	Response
-	VideoList []model.Video `json:"video_list"`
-}
 
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
 	token := c.Query("token")
 
 	if _, exist := usersLoginInfo[token]; !exist {
-		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
+		api.RespWithErr(c, errcode.UnauthorizedTokenError)
 		return
 	}
 
 	data, err := c.FormFile("data")
 	if err != nil {
-		c.JSON(http.StatusOK, Response{
-			StatusCode: 1,
-			StatusMsg:  err.Error(),
-		})
+		api.RespOK(c)
 		return
 	}
 
@@ -37,25 +29,17 @@ func Publish(c *gin.Context) {
 	finalName := fmt.Sprintf("%d_%s", user.Id, filename)
 	saveFile := filepath.Join("./public/", finalName)
 	if err := c.SaveUploadedFile(data, saveFile); err != nil {
-		c.JSON(http.StatusOK, Response{
-			StatusCode: 1,
-			StatusMsg:  err.Error(),
-		})
+		fmt.Printf("%w", err)
+		api.RespWithErr(c, errcode.ServerError)
 		return
 	}
 
-	c.JSON(http.StatusOK, Response{
-		StatusCode: 0,
-		StatusMsg:  finalName + " uploaded successfully",
-	})
+	api.RespOK(c)
 }
 
 // PublishList all users have same publish video list
 func PublishList(c *gin.Context) {
-	c.JSON(http.StatusOK, VideoListResponse{
-		Response: Response{
-			StatusCode: 0,
-		},
-		VideoList: DemoVideos,
+	api.RespWithData(c, gin.H{
+		"video_list": DemoVideos,
 	})
 }
