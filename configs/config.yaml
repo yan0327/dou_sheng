@@ -11,8 +11,10 @@ App:
   LogSavePath: storage/logs
   LogFileName: app
   LogFileExt: .log
-  UploadSavePath: storage/uploadsVedio
-  UploadServerUrl: http://106.55.103.222:8080/static
+  UploadVideoSavePath: storage/uploadsVideo
+  UploadImageSavePath: storage/uploadsImage
+  UploadVideoServerUrl: http://106.55.103.222:8080/static/video
+  UploadImageServerUrl: http://106.55.103.222:8080/static/image
   UploadImageMaxSize: 512  # MB
   UploadImageAllowExts:
     - .jpg
@@ -21,7 +23,7 @@ App:
     - .mp4
 
 JWT:
-  Secret: eddycjy
+  Secret: youarebig
   Issuer: tiktok
   Expire: 7200
 
@@ -36,3 +38,5 @@ Database:
   ParseTime: True
   MaxIdleConns: 10
   MaxOpenConns: 30
+  PrepareStmt: true
+  SkipDefaultTransaction: true

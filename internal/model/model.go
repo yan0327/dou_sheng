@@ -35,6 +35,8 @@ func NewDBEngine(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {
 		databaseSetting.DBName,
 		databaseSetting.Charset,
 		databaseSetting.ParseTime,
+		// databaseSetting.PrepareStmt,
+		// databaseSetting.SkipDefaultTransaction,
 	))
 	if err != nil {
 		return nil, err

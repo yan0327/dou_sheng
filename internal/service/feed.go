@@ -10,7 +10,7 @@ type FeedRequest struct {
 	LatestTime int64 `form:"latest_time"`
 }
 type FeedResponse struct {
-	Response
+	*Response
 	VideoList []model.Video `json:"video_list,omitempty"`
 	NextTime  int64         `json:"next_time,omitempty"`
 }
@@ -27,6 +27,10 @@ func (svc *Service) ReverseFeed(params *FeedRequest) (*FeedResponse, error) {
 	}
 	fmt.Println("FeedResponse", vedios)
 	respond := &FeedResponse{
+		Response: &Response{
+			StatusCode: 0,
+			StatusMsg:  "success",
+		},
 		VideoList: vedios,
 		NextTime:  time.Now().Unix(),
 	}

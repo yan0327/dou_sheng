@@ -26,3 +26,10 @@ func (d *Dao) FavoriteAction(userId uint32, videoId uint32, actionType int) erro
 	}
 	return favorite.FavoriteAction(d.engine)
 }
+
+func (d *Dao) FavoriteList(userId uint32) ([]model.Video, error) {
+	favorite := model.Favorite{
+		UserId: userId,
+	}
+	return favorite.FavoriteList(d.engine)
+}

@@ -15,8 +15,8 @@ func NewRouter() *gin.Engine {
 	r := gin.Default()
 	regisMiddleWare(r)
 
-	r.StaticFS("/static", http.Dir(global.AppSetting.UploadSavePath))
-
+	r.StaticFS("/static/video", http.Dir(global.AppSetting.UploadVideoSavePath))
+	r.StaticFS("/static/image", http.Dir(global.AppSetting.UploadImageSavePath))
 	apiRouter := r.Group("/douyin")
 	{
 		// basic apis
@@ -81,6 +81,6 @@ func regisMiddleWare(r *gin.Engine) {
 		r.Use(middleware.Recovery())
 	}
 
-	r.Use(middleware.Translations())
+	// r.Use(middleware.Translations())
 	r.Use(middleware.Tracing())
 }

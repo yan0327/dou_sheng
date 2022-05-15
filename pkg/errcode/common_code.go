@@ -17,4 +17,5 @@ var (
 	PublishError        = NewError(20000002, "发布视频错误")
 	PublishListError    = NewError(20000003, "获取发布视频错误")
 	FavoriteActionError = NewError(20000004, "点赞错误")
+	FavoriteListError   = NewError(20000005, "获取点赞视频列表错误")
 )

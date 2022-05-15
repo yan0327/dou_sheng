@@ -7,8 +7,8 @@ import (
 )
 
 type Video struct {
-	Id       int64  `json:"id" gorm:"column:id"`
-	AuthorId int64  `json:"author_id,omitempty" gorm:"column:author_id"`
+	Id       uint32 `json:"id" gorm:"column:id"`
+	AuthorId uint32 `json:"author_id,omitempty" gorm:"column:author_id"`
 	Author   *User  `json:"author,omitempty"`
 	PlayUrl  string `json:"play_url,omitempty" gorm:"column:play_url"`
 	CoverUrl string `json:"cover_url,omitempty" gorm:"column:cover_url"`
@@ -73,4 +73,34 @@ func (this *Favorite) FavoriteAction(db *gorm.DB) error {
 		return err
 	}
 	return err
+}
+
+func (this *Favorite) FavoriteList(db *gorm.DB) ([]Video, error) {
+	favorites := []Favorite{}
+	err := db.Table("tiktok_video_like").Where("user_id = ? AND action_type = ?", this.UserId, 1).Find(&favorites).Error
+	if err != nil {
+		return nil, err
+	}
+	videos := make([]Video, len(favorites))
+	for i := range favorites {
+		db.Table("tiktok_video").Where("id = ?", favorites[i].VideoId).Find(&videos[i])
+		user := User{
+			ID: videos[i].AuthorId,
+		}
+		user, _ = user.GetUserInfo(db)
+		videos[i].Author = &user
+		db.Table("tiktok_video_like").Where("video_id = ? AND action_type = ?", favorites[i].VideoId, 1).Count(&videos[i].FavoriteCount)
+		db.Table("tiktok_video_comment").Where("video_id = ?", favorites[i].VideoId).Count(&videos[i].CommentCount)
+		var isFavorite, isFollow int
+		db.Table("tiktok_video_like").Where("user_id = ? AND video_id = ? AND action_type = ?", this.UserId, this.VideoId, 1).Count(&isFavorite)
+		if isFavorite >= 1 {
+			videos[i].IsFavorite = true
+		}
+		db.Table("tiktok_relation").Where("user_id = ? AND follower_id = ? AND action_type = ?", videos[i].AuthorId, this.UserId, 1).Count(&isFollow)
+		if isFollow >= 1 {
+			videos[i].Author.IsFollow = true
+		}
+	}
+
+	return videos, nil
 }

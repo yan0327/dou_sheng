@@ -21,6 +21,18 @@ import (
 
 type FileType int
 
+func GetSavaAndPlayPath(name string) (string, string) {
+	ext := GetFileExt(name)
+	ext = strings.ToUpper(ext)
+	switch ext {
+	case ".MP4":
+		return GetVideoSavePath(), GetVideoServerUrl()
+	case ".JPG":
+		return GetImageSavePath(), GetImageServerUrl()
+	}
+	return "", ""
+}
+
 func GetFileName(name string, username string) string {
 	ext := GetFileExt(name)
 	fileName := strings.TrimSuffix(name, ext)
@@ -35,14 +47,18 @@ func GetFileExt(name string) string {
 	return path.Ext(name)
 }
 
-func GetSavePath() string {
-	return global.AppSetting.UploadSavePath
+func GetVideoSavePath() string {
+	return global.AppSetting.UploadVideoSavePath
 }
-
-func GetServerUrl() string {
-	return global.AppSetting.UploadServerUrl
+func GetImageSavePath() string {
+	return global.AppSetting.UploadImageSavePath
 }
-
+func GetVideoServerUrl() string {
+	return global.AppSetting.UploadVideoServerUrl
+}
+func GetImageServerUrl() string {
+	return global.AppSetting.UploadImageServerUrl
+}
 func CheckSavePath(dst string) bool {
 	_, err := os.Stat(dst)
 
@@ -53,7 +69,7 @@ func CheckContainExt(name string) bool {
 	ext := GetFileExt(name)
 	ext = strings.ToUpper(ext)
 	switch ext {
-	case ".image":
+	case ".JPG":
 		for _, allowExt := range global.AppSetting.UploadImageAllowExts {
 			if strings.ToUpper(allowExt) == ext {
 				return true
@@ -75,6 +91,10 @@ func CheckMaxSize(name string, f multipart.File) bool {
 	size := len(content)
 	switch ext {
 	case ".MP4":
+		if size >= global.AppSetting.UploadImageMaxSize*1024*1024 {
+			return true
+		}
+	case ".JPG":
 		if size >= global.AppSetting.UploadImageMaxSize*1024*1024 {
 			return true
 		}

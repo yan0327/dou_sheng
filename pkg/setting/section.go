@@ -18,8 +18,10 @@ type AppSettingS struct {
 	LogSavePath           string
 	LogFileName           string
 	LogFileExt            string
-	UploadSavePath        string
-	UploadServerUrl       string
+	UploadVideoSavePath   string
+	UploadImageSavePath   string
+	UploadVideoServerUrl  string
+	UploadImageServerUrl  string
 	UploadImageMaxSize    int
 	UploadImageAllowExts  []string
 }
@@ -31,16 +33,18 @@ type JWTSettingS struct {
 }
 
 type DatabaseSettingS struct {
-	DBType       string
-	UserName     string
-	Password     string
-	Host         string
-	DBName       string
-	TablePrefix  string
-	Charset      string
-	ParseTime    bool
-	MaxIdleConns int
-	MaxOpenConns int
+	DBType                 string
+	UserName               string
+	Password               string
+	Host                   string
+	DBName                 string
+	TablePrefix            string
+	Charset                string
+	ParseTime              bool
+	MaxIdleConns           int
+	MaxOpenConns           int
+	PrepareStmt            bool
+	SkipDefaultTransaction bool
 }
 
 type LimiterSettingS struct {
