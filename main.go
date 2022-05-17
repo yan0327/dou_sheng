@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 	"simple-demo/global"
-	"simple-demo/internal/model"
-	"simple-demo/internal/routers"
+	"simple-demo/model"
+	"simple-demo/routers"
 
 	"simple-demo/pkg/logger"
 	"simple-demo/pkg/setting"
@@ -98,7 +98,6 @@ func setupSetting() error {
 	}
 
 	global.AppSetting.DefaultContextTimeout *= time.Second
-	global.JWTSetting.Expire *= time.Second
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
 	if port != "" {

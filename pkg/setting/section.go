@@ -27,7 +27,7 @@ type AppSettingS struct {
 type JWTSettingS struct {
 	Secret string
 	Issuer string
-	Expire time.Duration
+	Expire int64
 }
 
 type DatabaseSettingS struct {

@@ -11,8 +11,8 @@ App:
   LogSavePath: storage/logs
   LogFileName: app
   LogFileExt: .log
-  UploadSavePath: storage/uploads
-  UploadServerUrl: http://127.0.0.1:8080/upload
+  UploadSavePath: public/upload
+  UploadServerUrl: http://127.0.0.1:8080/public/upload
   UploadImageMaxSize: 512  # MB
   UploadImageAllowExts:
     - .jpg
