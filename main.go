@@ -27,6 +27,7 @@ var (
 )
 
 func init() {
+
 	err := setupFlag()
 	if err != nil {
 		log.Fatalf("init.setupFlag err: %v", err)

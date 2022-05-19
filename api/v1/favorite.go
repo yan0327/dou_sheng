@@ -15,7 +15,6 @@ import (
 func FavoriteAction(c *gin.Context) {
 	token := c.Query("token")
 	VideoID, _ := strconv.Atoi(c.Query("video_id"))
-
 	var islike uint8 = 0
 	action_type, _ := strconv.Atoi(c.Query("action_type"))
 
@@ -54,6 +53,7 @@ func FavoriteAction(c *gin.Context) {
 // FavoriteList all users have same favorite video list
 func FavoriteList(c *gin.Context) {
 	token := c.Query("token")
+	//user_id := c.Query("user_id")
 	var err error
 	var user model.User
 	j := middleware.NewJWT()
@@ -73,6 +73,7 @@ func FavoriteList(c *gin.Context) {
 		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
 	}
 	ReplyVideos := []model.ReplyVideo{}
+	//ReplyVideos, err = service.FavoriteList(user_id)
 	ReplyVideos, err = service.FavoriteList(user.ID)
 	if err != nil {
 		c.JSON(http.StatusOK, LikeListResponse{

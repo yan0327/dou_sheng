@@ -125,15 +125,7 @@ func FollowList(c *gin.Context) {
 				UserList: repley,
 			})
 		}
-		follower.IsFollow, err = service.IsFollow(user.ID, follower.ID)
-		if err != nil {
-			c.JSON(http.StatusOK, UserListResponse{
-				Response: Response{
-					StatusCode: 0,
-				},
-				UserList: repley,
-			})
-		}
+		follower.IsFollow = service.IsFollow(user.ID, follower.ID)
 		repley = append(repley, follower)
 	}
 	c.JSON(http.StatusOK, UserListResponse{
@@ -214,15 +206,7 @@ func FollowerList(c *gin.Context) {
 				UserList: repley,
 			})
 		}
-		follower.IsFollow, err = service.IsFollow(user.ID, follower.ID)
-		if err != nil {
-			c.JSON(http.StatusOK, UserListResponse{
-				Response: Response{
-					StatusCode: 0,
-				},
-				UserList: repley,
-			})
-		}
+		follower.IsFollow = service.IsFollow(user.ID, follower.ID)
 		repley = append(repley, follower)
 	}
 	c.JSON(http.StatusOK, UserListResponse{

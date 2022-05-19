@@ -30,6 +30,7 @@ func FindReplyUser(UserID uint, GoalID uint) (reply model.ReplyUser, err error) 
 	if err != nil {
 		return
 	}
+	reply.ID = user.ID
 	reply.Username = user.Username
 	reply.FollowCount, err = GetFollowNum(user.ID)
 	if err != nil {
@@ -39,9 +40,7 @@ func FindReplyUser(UserID uint, GoalID uint) (reply model.ReplyUser, err error) 
 	if err != nil {
 		return
 	}
-	reply.IsFollow, err = IsFollow(UserID, GoalID)
-	if err != nil {
-		return
-	}
+	reply.IsFollow = IsFollow(UserID, GoalID)
+
 	return
 }

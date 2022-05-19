@@ -49,6 +49,5 @@ func NewRouter() *gin.Engine {
 func regisMiddleWare(r *gin.Engine) {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	r.Use(middleware.Translations())
 	r.Use(middleware.Tracing())
 }

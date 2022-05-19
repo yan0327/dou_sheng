@@ -44,13 +44,13 @@ func GetFollowerID(ID uint) (users []model.Realtion, err error) {
 	err = global.DBEngine.Model(&model.Realtion{}).Where("follower_id = ? AND is_effective = ?", ID, "1").Find(&users).Error
 	return
 }
-func IsFollow(FollowID uint, FollowerID uint) (Isfollow bool, err error) {
+func IsFollow(FollowID uint, FollowerID uint) (Isfollow bool) {
 	var real model.Realtion
 	global.DBEngine.Model(&model.Realtion{}).Where("user_id = ? AND follower_id = ?", FollowID, FollowerID).Find(&real)
 	if real.IsEffective != 1 {
-		return false, err
+		return false
 	}
-	return true, err
+	return true
 }
 
 func SetOrUpdateRelation(FollowID uint, FollowerID uint, IsEffiective uint8) (real model.Realtion, err error) {

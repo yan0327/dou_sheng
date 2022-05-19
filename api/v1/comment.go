@@ -79,7 +79,7 @@ func CommentList(c *gin.Context) {
 	user, err = service.FindUser(claims.Username)
 	if err != nil {
 		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
-
+		return
 	}
 	comments, err = service.GetComments(uint(VideoID))
 	for i := 0; i < len(comments); i++ {
@@ -88,7 +88,7 @@ func CommentList(c *gin.Context) {
 			Content:    comments[i].Content,
 			CreateTime: comments[i].CreateTime,
 		}
-		replyuser, err := service.FindReplyUser(user.ID, comments[i].ID)
+		replyuser, err := service.FindReplyUser(user.ID, comments[i].UserId)
 		if err != nil {
 			c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
 		}

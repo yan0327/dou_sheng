@@ -8,7 +8,7 @@ type User struct {
 
 type ReplyUser struct {
 	ID            uint   `json:"id,omitempty" gorm:"primarykey"`
-	Username      string `json:"username,omitempty"`
+	Username      string `json:"name,omitempty"`
 	FollowCount   int64  `json:"follow_count"`
 	FollowerCount int64  `json:"follower_count"`
 	IsFollow      bool   `json:"is_follow"`
