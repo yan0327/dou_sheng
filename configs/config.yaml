@@ -25,7 +25,7 @@ App:
 JWT:
   Secret: youarebig
   Issuer: tiktok
-  Expire: 7200
+  Expire: 720000
 
 Database:
   DBType: mysql

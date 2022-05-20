@@ -3,8 +3,8 @@ package service
 import "errors"
 
 type AuthRequest struct {
-	AppKey    string `form:"app_key" binding:"required"`
-	AppSecret string `form:"app_secret" binding:"required"`
+	AppKey    string `form:"app_key"`
+	AppSecret string `form:"app_secret" `
 }
 
 func (svc *Service) CheckAuth(param *AuthRequest) error {

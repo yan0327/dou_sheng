@@ -14,8 +14,14 @@ import (
 func Publish(c *gin.Context) {
 	response := app.NewResponse(c)
 	params := service.PublishRequest{}
-
-	params.Token = c.Query("token")
+	valid, errs := app.BindAndValid(c, &params)
+	if !valid {
+		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
+		errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+		response.ToErrorResponse(errRsp)
+		return
+	}
+	// params.Token = c.Query("token")
 	file, fileHeader, err := c.Request.FormFile("data")
 	if err != nil {
 		global.Logger.Errorf(c, "app.FormFile err: %v", err)
@@ -40,23 +46,23 @@ func Publish(c *gin.Context) {
 
 // PublishList all users have same publish video list
 func PublishList(c *gin.Context) {
-	// params := service.PublishListRequest{}
-	// response := app.NewResponse(c)
-	// valid, errs := app.BindAndValid(c, &params)
-	// if !valid {
-	// 	global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
-	// 	errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
-	// 	response.ToErrorResponse(errRsp)
-	// 	return
-	// }
+	params := service.PublishListRequest{}
+	response := app.NewResponse(c)
+	valid, errs := app.BindAndValid(c, &params)
+	if !valid {
+		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
+		errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
+		response.ToErrorResponse(errRsp)
+		return
+	}
 
-	// svc := service.New(c.Request.Context())
-	// respond, err := svc.PublishList(&params)
-	// if err != nil {
-	// 	global.Logger.Errorf(c, "svc.PublishList err: %v", err)
-	// 	response.ToErrorResponse(errcode.PublishListError)
-	// 	return
-	// }
+	svc := service.New(c.Request.Context())
+	respond, err := svc.PublishList(&params)
+	if err != nil {
+		global.Logger.Errorf(c, "svc.PublishList err: %v", err)
+		response.ToErrorResponse(errcode.PublishListError)
+		return
+	}
 
-	// c.JSON(http.StatusOK, respond)
+	c.JSON(http.StatusOK, respond)
 }

@@ -5,14 +5,14 @@ import (
 )
 
 type Comment struct {
-	Id         uint32 `gorm:"column:id"`
+	Id         uint32 `json:"id" gorm:"column:id"`
 	UserId     uint32 `gorm:"column:user_id"`
 	VideoId    uint32 `gorm:"column:video_id"`
-	User       *User
+	User       *User  `gorm:"-" json:"user"`
 	ActionType uint8  `gorm:"-"`
-	Content    string `gorm:"column:content"`
+	Content    string `json:"content" gorm:"column:content"`
 	CommentId  uint32 `gorm:"-"`
-	CreateDate string `gorm:"column:create_time"`
+	CreateDate string `json:"create_date" gorm:"column:create_time"`
 }
 
 // type CreateCommonParams struct {
@@ -32,6 +32,8 @@ func (this Comment) TableName() string {
 
 func (this Comment) CreateComment(db *gorm.DB) error {
 	var err error
+	db.Table("tiktok_user").Where("username = ?", this.User.UserName).Find(this.User)
+	this.UserId = this.User.ID
 	if this.ActionType == 1 {
 		err = db.Omit("CreateDate").Create(&this).Error
 		return err
@@ -43,7 +45,7 @@ func (this Comment) CreateComment(db *gorm.DB) error {
 
 func (this Comment) GetCommentList(db *gorm.DB) ([]Comment, error) {
 	comments := []Comment{}
-	err := db.Where("video_id = ?", this.VideoId).Order("create_time desc").Find(&comments).Error
+	err := db.Table("tiktok_video_comment").Where("video_id = ?", this.VideoId).Order("create_time desc").Find(&comments).Error
 	if err != nil {
 		return nil, err
 	}
@@ -51,8 +53,7 @@ func (this Comment) GetCommentList(db *gorm.DB) ([]Comment, error) {
 		user := User{
 			ID: comments[i].UserId,
 		}
-		user, _ = user.GetUserInfo(db)
-		comments[i].User = &user
+		comments[i].User = user.CommentGetUserInfo(db)
 		var isFollow int
 		db.Table("tiktok_relation").Where("user_id = ? AND follower_id = ? AND action_type = ?", comments[i].User.ID, this.UserId, 1).Count(&isFollow)
 		if isFollow >= 1 {

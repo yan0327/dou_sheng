@@ -50,7 +50,7 @@ func FollowList(c *gin.Context) {
 		response.ToErrorResponse(errRsp)
 		return
 	}
-
+	params.Token = c.Query("token")
 	svc := service.New(c.Request.Context())
 	respond, err := svc.FollowList(&params)
 	if err != nil {

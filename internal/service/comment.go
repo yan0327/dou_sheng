@@ -1,22 +1,24 @@
 package service
 
 import (
+	"errors"
 	"simple-demo/internal/model"
+	"simple-demo/pkg/app"
 )
 
 type CommentRequest struct {
-	UserId      uint32 `form:"user_id" binding:"required"`
-	Token       string `form:"token"`
-	VideoId     uint32 `form:"video_id" binding:"required"`
-	ActionType  uint8  `form:"action_type" binding:"required"`
+	UserId      uint32 `form:"user_id"`
+	VideoId     uint32 `form:"video_id"`
+	ActionType  uint8  `form:"action_type"`
 	CommentText string `form:"comment_text"`
 	CommentId   uint32 `form:"comment_id"`
+	Token       string `form:"token"`
 }
 
 type CommentListRequest struct {
-	UserId  uint32 `form:"user_id" binding:"required"`
+	UserId  uint32 `form:"user_id"`
+	VideoId uint32 `form:"video_id"`
 	Token   string `form:"token"`
-	VideoId uint32 `form:"video_id" binding:"required"`
 }
 
 type CommentListResponse struct {
@@ -31,7 +33,11 @@ func (svc *Service) CreateComment(params *CommentRequest) (*Response, error) {
 	if params.ActionType == 1 && params.CommentText == "" {
 		return &Response{StatusCode: 200, StatusMsg: "not comment"}, nil
 	}
-	err := svc.dao.CreateComment(params.UserId, params.VideoId, params.ActionType, params.CommentText, params.CommentId)
+	claims, err := app.ParseToken(params.Token)
+	if err != nil {
+		return nil, errors.New("token 不存在")
+	}
+	err = svc.dao.CreateComment(claims.AppKey, params.VideoId, params.ActionType, params.CommentText, params.CommentId)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +45,12 @@ func (svc *Service) CreateComment(params *CommentRequest) (*Response, error) {
 }
 
 func (svc *Service) GetCommentList(params *CommentListRequest) (*CommentListResponse, error) {
-	comments, err := svc.dao.GetCommentList(params.UserId, params.VideoId)
+	claims, err := app.ParseToken(params.Token)
+	if err != nil {
+		return nil, errors.New("token 不存在")
+	}
+
+	comments, err := svc.dao.GetCommentList(claims.AppKey, params.VideoId)
 	if err != nil {
 		return nil, err
 	}

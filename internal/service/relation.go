@@ -1,17 +1,22 @@
 package service
 
-import "simple-demo/internal/model"
+import (
+	"errors"
+	"simple-demo/internal/model"
+	"simple-demo/pkg/app"
+)
 
 type RelationRequest struct {
-	UserId     uint32 `form:"user_id" binding:"required"`
+	UserId     uint32 `form:"user_id" `
 	Token      string `form:"token"`
-	ToUserId   uint32 `form:"to_user_id" binding:"required"`
-	ActionType uint8  `form:"action_type" binding:"required,oneof=1 2"`
+	ToUserId   uint32 `form:"to_user_id" `
+	ActionType uint8  `form:"action_type" `
 }
 
 //关注列表
 type FollowListRequest struct {
-	UserId uint32 `form:"user_id" binding:"required"`
+	UserId uint32 `form:"user_id" `
+	Token  string `form:"token"`
 }
 
 type FollowListRepond struct {
@@ -21,12 +26,15 @@ type FollowListRepond struct {
 
 //粉丝列表
 type FollowerListRequest struct {
-	UserId uint32 `form:"user_id" binding:"required"`
-	// Token  string `form:"token" binding:"required"`
+	UserId uint32 `form:"user_id"`
 }
 
 func (svc *Service) RelationAction(params *RelationRequest) (*Response, error) {
-	err := svc.dao.RelationAction(params.UserId, params.ToUserId, params.ActionType)
+	claims, err := app.ParseToken(params.Token)
+	if err != nil {
+		return nil, errors.New("relationAction token 不存在")
+	}
+	err = svc.dao.RelationAction(claims.AppKey, params.ToUserId, params.ActionType)
 	if err != nil {
 		return nil, err
 	}

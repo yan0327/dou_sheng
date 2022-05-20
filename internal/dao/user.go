@@ -12,8 +12,8 @@ func (d *Dao) UserLogin(username, password string) (uint32, error) {
 	return user.UserLogin(d.engine)
 }
 
-func (d *Dao) GetUserInfo(id uint32) (model.User, error) {
-	user := model.User{ID: id}
+func (d *Dao) GetUserInfo(username string) (model.User, error) {
+	user := model.User{UserName: username}
 	return user.GetUserInfo(d.engine)
 }
 

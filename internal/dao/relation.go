@@ -2,10 +2,10 @@ package dao
 
 import "simple-demo/internal/model"
 
-func (d *Dao) RelationAction(userId uint32, toUserId uint32, acitonType uint8) error {
+func (d *Dao) RelationAction(username string, toUserId uint32, acitonType uint8) error {
 	relation := model.Relation{
 		UserId:     toUserId,
-		FollowerId: userId,
+		UserName:   username,
 		ActionType: acitonType,
 	}
 	return relation.RelationAction(d.engine)
@@ -13,7 +13,7 @@ func (d *Dao) RelationAction(userId uint32, toUserId uint32, acitonType uint8) e
 
 func (d *Dao) FollowList(userId uint32) ([]model.User, error) {
 	relation := model.Relation{
-		Id: userId,
+		FollowerId: userId,
 	}
 	return relation.FollowList(d.engine)
 }

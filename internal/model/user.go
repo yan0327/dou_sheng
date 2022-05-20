@@ -23,7 +23,7 @@ type User struct {
 }
 
 func (this User) TableName() string {
-	return "User"
+	return "tiktok_user"
 }
 
 func (this User) Register(db *gorm.DB) (uint32, error) {
@@ -45,10 +45,11 @@ func (this User) UserLogin(db *gorm.DB) (uint32, error) {
 
 func (this User) GetUserInfo(db *gorm.DB) (User, error) {
 	user := User{}
-	err := db.Table("tiktok_user").Where("id = ?", this.ID).Find(&user).Error
+	err := db.Table("tiktok_user").Where("username = ?", this.UserName).Find(&user).Error
 	if err != nil {
 		return user, err
 	}
+	this.ID = user.ID
 	var cnt uint32
 	err = db.Table("tiktok_relation").Where("user_id = ? AND action_type = ?", this.ID, 1).Count(&cnt).Error
 	if err != nil {
@@ -61,4 +62,20 @@ func (this User) GetUserInfo(db *gorm.DB) (User, error) {
 	}
 	user.FollowerCount = cnt
 	return user, nil
+}
+
+func (this User) VideoGetUserInfo(db *gorm.DB) *User {
+	user := User{ID: this.ID}
+	db.Table("tiktok_user").Where("id = ?", this.ID).First(&user)
+	db.Table("tiktok_relation").Where("user_id = ? AND action_type = ?", this.ID, 1).Count(&user.FollowCount)
+	db.Table("tiktok_relation").Where("follower_id = ? AND action_type = ?", this.ID, 1).Count(&user.FollowerCount)
+	return &user
+}
+
+func (this User) CommentGetUserInfo(db *gorm.DB) *User {
+	user := User{ID: this.ID}
+	db.Table("tiktok_user").Where("id = ?", this.ID).First(&user)
+	db.Table("tiktok_relation").Where("user_id = ? AND action_type = ?", this.ID, 1).Count(&user.FollowCount)
+	db.Table("tiktok_relation").Where("follower_id = ? AND action_type = ?", this.ID, 1).Count(&user.FollowerCount)
+	return &user
 }

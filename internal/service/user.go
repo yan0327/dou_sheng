@@ -1,23 +1,24 @@
 package service
 
 import (
+	"errors"
 	"simple-demo/internal/model"
 	"simple-demo/pkg/app"
 )
 
 type UserLoginRequest struct {
-	UserName string `form:"username" binding:"required,max=32"`
-	PassWord string `form:"password" binding:"required,max=32"`
+	UserName string `form:"username"`
+	PassWord string `form:"password"`
 }
 
 type UserInfoRequest struct {
-	UserId uint32 `form:"user_id" binding:"required"`
+	UserId uint32 `form:"user_id"`
 	Token  string `form:"token"`
 }
 
 type UserRegisterRequest struct {
-	UserName string `form:"username" binding:"required,max=32"`
-	PassWord string `form:"password" binding:"required,max=32"`
+	UserName string `form:"username"`
+	PassWord string `form:"password"`
 }
 
 type UserLoginResponse struct {
@@ -38,12 +39,11 @@ type UserRegisterRespond struct {
 }
 
 func (svc *Service) UserInfo(params *UserInfoRequest) (*UserInfoResponse, error) {
-	token := params.Token
-	_, err := app.ParseToken(token)
+	claims, err := app.ParseToken(params.Token)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("token 不存在")
 	}
-	user, err := svc.dao.GetUserInfo(params.UserId)
+	user, err := svc.dao.GetUserInfo(claims.AppKey)
 	if err != nil {
 		return nil, err
 	}

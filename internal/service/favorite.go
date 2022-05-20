@@ -1,17 +1,21 @@
 package service
 
 import (
+	"errors"
 	"simple-demo/internal/model"
+	"simple-demo/pkg/app"
 )
 
 type FavoriteRequest struct {
-	UserId     uint32 `form:"user_id" binding:"required"`
-	VideoId    uint32 `form:"video_id" binding:"required"`
-	ActionType int    `form:"action_type" binding:"required,oneof= 1 2"`
+	UserId     uint32 `form:"user_id"`
+	VideoId    uint32 `form:"video_id" `
+	ActionType int    `form:"action_type" `
+	Token      string `form:"token" `
 }
 
 type FavoriteListRequest struct {
-	UserId uint32 `form:"user_id"  binding:"required"`
+	UserId uint32 `form:"user_id"`
+	Token  string `form:"token"`
 }
 
 type FavoriteListRespond struct {
@@ -19,10 +23,12 @@ type FavoriteListRespond struct {
 	VideoList []model.Video `json:"video_list,omitempty"`
 }
 
-
-
 func (svc *Service) FavoriteAction(params *FavoriteRequest) (*Response, error) {
-	err := svc.dao.FavoriteAction(params.UserId, params.VideoId, params.ActionType)
+	claims, err := app.ParseToken(params.Token)
+	if err != nil {
+		return nil, errors.New("token 不存在")
+	}
+	err = svc.dao.FavoriteAction(claims.AppKey, params.VideoId, params.ActionType)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +36,11 @@ func (svc *Service) FavoriteAction(params *FavoriteRequest) (*Response, error) {
 }
 
 func (svc *Service) FavoriteList(params *FavoriteListRequest) (*FavoriteListRespond, error) {
-	videos, err := svc.dao.FavoriteList(params.UserId)
+	claims, err := app.ParseToken(params.Token)
+	if err != nil {
+		return nil, errors.New("token 不存在")
+	}
+	videos, err := svc.dao.FavoriteList(claims.AppKey)
 	if err != nil {
 		return nil, err
 	}

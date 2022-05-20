@@ -14,18 +14,39 @@ import (
 )
 
 type PublishRequest struct {
-	Token      string
+	Token      string `form:"token"`
 	File       multipart.File
 	FileHeader *multipart.FileHeader
 }
 
 type PublishListRequest struct {
-	Token string `form:"token"`
+	Token  string `form:"token"`
+	UserId uint32 `form:"user_id"`
 }
 
 type VideoListResponse struct {
 	*Response
 	VideoList []model.Video `json:"video_list"`
+}
+
+func (svc *Service) PublishList(params *PublishListRequest) (*VideoListResponse, error) {
+	// claims, err := app.ParseToken(params.Token)
+	// if err != nil {
+	// 	return nil, errors.New("token 不存在")
+	// }
+	vedios, err := svc.dao.PublishList(params.UserId)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("FeedResponse", vedios)
+	respond := &VideoListResponse{
+		Response: &Response{
+			StatusCode: 0,
+			StatusMsg:  "success",
+		},
+		VideoList: vedios,
+	}
+	return respond, nil
 }
 
 func (svc *Service) Publish(params *PublishRequest) (*Response, error) {
@@ -73,6 +94,6 @@ func (svc *Service) Publish(params *PublishRequest) (*Response, error) {
 	return &Response{StatusCode: 0, StatusMsg: "success"}, nil
 }
 
-func (svc *Service) PublishList(params *PublishListRequest) (*VideoListResponse, error) {
-	return nil, nil
-}
+// func (svc *Service) PublishList(params *PublishListRequest) (*VideoListResponse, error) {
+// 	return nil, nil
+// }

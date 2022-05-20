@@ -13,7 +13,7 @@ type Video struct {
 	PlayUrl  string `json:"play_url,omitempty" gorm:"column:play_url"`
 	CoverUrl string `json:"cover_url,omitempty" gorm:"column:cover_url"`
 
-	User          *User
+	User          *User `gorm:"-"`
 	FavoriteCount int64 `json:"favorite_count,omitempty"`
 	CommentCount  int64 `json:"comment_count,omitempty"`
 	IsFavorite    bool  `json:"is_favorite,omitempty"`
@@ -33,17 +33,37 @@ type Favorite struct {
 	UserId     uint32 `gorm:"column:user_id"`
 	VideoId    uint32 `gorm:"column:video_id"`
 	ActionType int    `gorm:"column:action_type"`
+	UserName   string `gorm:"-"`
 }
 
 func (this Video) TableName() string {
-	return "Video"
+	return "tiktok_video"
 }
 func (this *Video) ReverseFeed(db *gorm.DB, lastTime int64) ([]Video, error) {
 	videos := make([]Video, 0)
-	format := time.Unix(int64(this.LastTime), 0).Format("2006-01-02 15:04:05")
+	format := time.Unix(int64(time.Now().Unix()), 0).Format("2006-01-02 15:04:05")
 	err := db.Table("tiktok_video").Where("create_time <= ?", format).Order("id").Limit(30).Find(&videos).Error
+	for i := 0; i < len(videos); i++ {
+		user := User{ID: videos[i].AuthorId}
+		videos[i].Author = user.VideoGetUserInfo(db)
+		db.Table("tiktok_video_like").Where("video_id = ?", videos[i].Id).Count(&videos[i].FavoriteCount)
+		db.Table("tiktok_video_comment").Where("video_id = ?", videos[i].Id).Count(&videos[i].CommentCount)
+	}
 	if err != nil {
 		return nil, err
+	}
+	return videos, nil
+}
+
+func (this *Video) PublishList(db *gorm.DB) ([]Video, error) {
+	// db.Table("tiktok_user").Where("username = ?", this.User.UserName).Find(this.User)
+	videos := make([]Video, 0)
+	db.Table("tiktok_video").Select("*").Joins("inner join tiktok_video_like on tiktok_video.id = tiktok_video_like.video_id").Where("tiktok_video_like.user_id = ?", this.User.ID).Find(&videos)
+	for i := 0; i < len(videos); i++ {
+		user := User{ID: videos[i].AuthorId}
+		videos[i].Author = user.VideoGetUserInfo(db)
+		db.Table("tiktok_video_like").Where("video_id = ?", videos[i].Id).Count(&videos[i].FavoriteCount)
+		db.Table("tiktok_video_comment").Where("video_id = ?", videos[i].Id).Count(&videos[i].CommentCount)
 	}
 	return videos, nil
 }
@@ -63,6 +83,9 @@ func (this *VideoPush) Publish(db *gorm.DB) error {
 }
 
 func (this *Favorite) FavoriteAction(db *gorm.DB) error {
+	user := User{}
+	db.Table("tiktok_user").Select("id").Where("username = ?", this.UserName).Find(&user)
+	this.UserId = user.ID
 	fav := Favorite{}
 	err := db.Table("tiktok_video_like").Where("user_id = ? AND video_id = ?", this.UserId, this.VideoId).First(&fav).Error
 	if err == nil && fav.ActionType != this.ActionType {
@@ -76,6 +99,9 @@ func (this *Favorite) FavoriteAction(db *gorm.DB) error {
 }
 
 func (this *Favorite) FavoriteList(db *gorm.DB) ([]Video, error) {
+	user := User{}
+	db.Table("tiktok_user").Select("id").Where("username = ?", this.UserName).Find(&user)
+	this.UserId = user.ID
 	favorites := []Favorite{}
 	err := db.Table("tiktok_video_like").Where("user_id = ? AND action_type = ?", this.UserId, 1).Find(&favorites).Error
 	if err != nil {

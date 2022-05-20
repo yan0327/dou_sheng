@@ -7,6 +7,7 @@ type Relation struct {
 	FollowerId uint32 `gorm:"column:follower_id"`
 	UserId     uint32 `gorm:"column:user_id"`
 	ActionType uint8  `gorm:"column:action_type"`
+	UserName   string `gorm:"-"`
 }
 
 func (this Relation) TableName() string {
@@ -14,6 +15,7 @@ func (this Relation) TableName() string {
 }
 
 func (this Relation) RelationAction(db *gorm.DB) error {
+	db.Table("tiktok_user").Select("id").Where("username = ?", this.UserName).Find(&this.FollowerId)
 	relation := Relation{}
 	err := db.Where("user_id = ? AND follower_id = ?", this.UserId, this.FollowerId).First(&relation).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
@@ -27,6 +29,7 @@ func (this Relation) RelationAction(db *gorm.DB) error {
 }
 
 func (this Relation) FollowList(db *gorm.DB) ([]User, error) {
+	// db.Table("tiktok_user").Select("id").Where("username = ?", this.UserName).Find(&this.Id)
 	users := []User{}
 	db.Table("tiktok_user").Select("tiktok_user.id,tiktok_user.username").Joins("inner join tiktok_relation on tiktok_relation.user_id = tiktok_user.id").Where("tiktok_relation.follower_id = ?", this.Id).Scan(&users)
 	for i := 0; i < len(users); i++ {
