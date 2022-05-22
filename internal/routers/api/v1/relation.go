@@ -3,7 +3,6 @@ package v1
 import (
 	"net/http"
 	"simple-demo/global"
-	"simple-demo/internal/model"
 	"simple-demo/internal/service"
 	"simple-demo/pkg/app"
 	"simple-demo/pkg/errcode"
@@ -11,13 +10,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserListResponse struct {
-	Response
-	UserList []model.User `json:"user_list"`
+type Relation struct{}
+
+func NewRelation() *Relation {
+	return &Relation{}
 }
 
 // RelationAction no practical effect, just check if token is valid
-func RelationAction(c *gin.Context) {
+func (r *Relation) RelationAction(c *gin.Context) {
 	params := service.RelationRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &params)
@@ -40,7 +40,7 @@ func RelationAction(c *gin.Context) {
 }
 
 // FollowList all users have same follow list
-func FollowList(c *gin.Context) {
+func (r *Relation) FollowList(c *gin.Context) {
 	params := service.FollowListRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &params)
@@ -63,7 +63,7 @@ func FollowList(c *gin.Context) {
 }
 
 // FollowerList all users have same follower list
-func FollowerList(c *gin.Context) {
+func (r *Relation) FollowerList(c *gin.Context) {
 	params := service.FollowListRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &params)

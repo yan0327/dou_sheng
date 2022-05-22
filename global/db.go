@@ -1,7 +1,15 @@
 package global
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/go-redis/redis/v8"
+	"github.com/jinzhu/gorm"
+)
+
+type RedisClient struct {
+	prefix string
+}
 
 var (
-	DBEngine *gorm.DB
+	DBEngine    *gorm.DB
+	RedisEngine *redis.Client
 )

@@ -47,6 +47,13 @@ type DatabaseSettingS struct {
 	SkipDefaultTransaction bool
 }
 
+type RedisSettingS struct {
+	EndPoint string
+	PoolSize int
+	Database int
+	PassWord string
+	Prefix   string
+}
 type LimiterSettingS struct {
 	ContextTimeOut time.Duration
 }

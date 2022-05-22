@@ -10,8 +10,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Publish struct{}
+
+func NewPublish() *Publish {
+	return &Publish{}
+}
+
 //Publish check token then save upload file to public directory
-func Publish(c *gin.Context) {
+func (p *Publish) PublishVedio(c *gin.Context) {
 	response := app.NewResponse(c)
 	params := service.PublishRequest{}
 	valid, errs := app.BindAndValid(c, &params)
@@ -45,7 +51,7 @@ func Publish(c *gin.Context) {
 }
 
 // PublishList all users have same publish video list
-func PublishList(c *gin.Context) {
+func (p *Publish) PublishList(c *gin.Context) {
 	params := service.PublishListRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &params)

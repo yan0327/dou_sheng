@@ -10,8 +10,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Comment struct{}
+
+func NewComment() *Comment {
+	return &Comment{}
+}
+
 // CommentAction no practical effect, just check if token is valid
-func CommentAction(c *gin.Context) {
+func (cmt *Comment) CommentAction(c *gin.Context) {
 	params := service.CommentRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &params)
@@ -34,7 +40,7 @@ func CommentAction(c *gin.Context) {
 }
 
 // CommentList all videos have same demo comment list
-func CommentList(c *gin.Context) {
+func (cmt *Comment) CommentList(c *gin.Context) {
 	params := service.CommentListRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &params)

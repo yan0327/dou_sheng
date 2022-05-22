@@ -43,6 +43,10 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupDBEngine err: %v", err)
 	}
+	err = setupRedisEngine()
+	if err != nil {
+		log.Fatalf("init.setupRedisEngine err: %v", err)
+	}
 	// err = setupValidator()
 	// if err != nil {
 	// 	log.Fatalf("init.setupValidator err: %v", err)
@@ -96,6 +100,10 @@ func setupSetting() error {
 	if err != nil {
 		return err
 	}
+	err = s.ReadSection("Redis", &global.RedisSetting)
+	if err != nil {
+		return err
+	}
 
 	// err = s.ReadSection("Limiter", &global.LimiterSetting)
 	// if err != nil {
@@ -137,6 +145,15 @@ func setupDBEngine() error {
 		return err
 	}
 
+	return nil
+}
+
+func setupRedisEngine() error {
+	var err error
+	global.RedisEngine, err = model.NewRedisEngine(global.RedisSetting)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

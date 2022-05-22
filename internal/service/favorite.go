@@ -36,11 +36,11 @@ func (svc *Service) FavoriteAction(params *FavoriteRequest) (*Response, error) {
 }
 
 func (svc *Service) FavoriteList(params *FavoriteListRequest) (*FavoriteListRespond, error) {
-	claims, err := app.ParseToken(params.Token)
-	if err != nil {
-		return nil, errors.New("token 不存在")
-	}
-	videos, err := svc.dao.FavoriteList(claims.AppKey)
+	// claims, err := app.ParseToken(params.Token)
+	// if err != nil {
+	// 	return nil, errors.New("token 不存在")
+	// }
+	videos, err := svc.dao.FavoriteList(svc.ctx.Value("username").(string))
 	if err != nil {
 		return nil, err
 	}

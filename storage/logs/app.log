@@ -314,3 +314,11 @@
 2022/05/20 14:10:47 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653027047243439544}
 2022/05/20 14:11:36 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.Publish err: token 不存在","span_id":"36d178ab21df1cf0","time":1653027096628395730,"trace_id":"36d178ab21df1cf0"}
 2022/05/20 14:13:29 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653027209498206545}
+2022/05/20 15:19:09 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653031149208062068}
+2022/05/20 15:22:35 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653031355893544662}
+2022/05/20 15:26:57 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.Login err: password err","span_id":"3c33e857754cfa3f","time":1653031617688245505,"trace_id":"3c33e857754cfa3f"}
+2022/05/20 15:26:59 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"error","message":"svc.Login err: password err","span_id":"17601de1319090e9","time":1653031619523166622,"trace_id":"17601de1319090e9"}
+2022/05/20 15:28:13 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653031693145881798}
+2022/05/20 15:45:42 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653032742309087249}
+2022/05/21 20:36:44 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653136604346234533}
+2022/05/21 21:03:31 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653138211600276268}

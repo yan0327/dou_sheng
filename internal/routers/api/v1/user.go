@@ -11,7 +11,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Login(c *gin.Context) {
+type User struct{}
+
+func NewUser() *User {
+	return &User{}
+}
+
+func (u *User) Login(c *gin.Context) {
 	response := app.NewResponse(c)
 	param := service.UserLoginRequest{}
 	valid, errs := app.BindAndValid(c, &param)
@@ -41,7 +47,7 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, respond)
 }
 
-func UserInfo(c *gin.Context) {
+func (u *User) UserInfo(c *gin.Context) {
 	params := service.UserInfoRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &params)
@@ -63,7 +69,7 @@ func UserInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, respond)
 }
 
-func Register(c *gin.Context) {
+func (u *User) Register(c *gin.Context) {
 	response := app.NewResponse(c)
 	param := service.UserRegisterRequest{}
 	valid, errs := app.BindAndValid(c, &param)

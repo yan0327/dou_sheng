@@ -3,7 +3,6 @@ package v1
 import (
 	"net/http"
 	"simple-demo/global"
-	"simple-demo/internal/model"
 	"simple-demo/internal/service"
 	"simple-demo/pkg/app"
 	"simple-demo/pkg/errcode"
@@ -11,14 +10,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type FeedResponse struct {
-	Response
-	VideoList []model.Video `json:"video_list,omitempty"`
-	NextTime  int64         `json:"next_time,omitempty"`
+type Feed struct{}
+
+func NewFeed() *Feed {
+	return &Feed{}
 }
 
 // Feed same demo video list for every request
-func Feed(c *gin.Context) {
+func (f *Feed) GetFeed(c *gin.Context) {
 	response := app.NewResponse(c)
 	param := service.FeedRequest{}
 	valid, errs := app.BindAndValid(c, &param)

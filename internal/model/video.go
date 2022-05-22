@@ -12,6 +12,7 @@ type Video struct {
 	Author   *User  `json:"author,omitempty"`
 	PlayUrl  string `json:"play_url,omitempty" gorm:"column:play_url"`
 	CoverUrl string `json:"cover_url,omitempty" gorm:"column:cover_url"`
+	Title    string `json:"title,omitempty" gorm:"title" `
 
 	User          *User `gorm:"-"`
 	FavoriteCount int64 `json:"favorite_count,omitempty"`

@@ -40,3 +40,10 @@ Database:
   MaxOpenConns: 30
   PrepareStmt: true
   SkipDefaultTransaction: true
+
+Redis:
+  EndPoint: 127.0.0.1:6379
+  PoolSize: 10
+  Database: 0
+  Prefix: tiktok
+  PassWord:

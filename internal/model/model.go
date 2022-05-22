@@ -6,6 +6,7 @@ import (
 	"simple-demo/pkg/setting"
 	"time"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -115,4 +116,14 @@ func addExtraSpaceIfExist(str string) string {
 		return " " + str
 	}
 	return ""
+}
+
+func NewRedisEngine(redisSetting *setting.RedisSettingS) (*redis.Client, error) {
+	client := redis.NewClient(&redis.Options{
+		Addr:     redisSetting.EndPoint,
+		Password: redisSetting.PassWord,
+		DB:       redisSetting.Database,
+		PoolSize: redisSetting.PoolSize,
+	})
+	return client, nil
 }

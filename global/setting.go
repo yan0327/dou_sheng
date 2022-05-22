@@ -12,4 +12,5 @@ var (
 	DatabaseSetting *setting.DatabaseSettingS
 	Logger          *logger.Logger
 	LimiterSetting  *setting.LimiterSettingS
+	RedisSetting    *setting.RedisSettingS
 )
