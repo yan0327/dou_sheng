@@ -8,9 +8,6 @@ import (
 
 	"simple-demo/service"
 
-	"simple-demo/pkg/app"
-	"simple-demo/pkg/errcode"
-
 	"simple-demo/model/response"
 
 	"github.com/dgrijalva/jwt-go"
@@ -19,25 +16,9 @@ import (
 
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		req := service.UserInfoRequest{}
-		res := app.NewResponse(c)
-		valid, errs := app.BindAndValid(c, &req)
-		if !valid {
-			global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
-			errRsp := errcode.InvalidParams.WithDetails(errs.Errors()...)
-			res.ToErrorResponse(errRsp)
-			return
-		}
-
-		token := req.Token
-		if token == "" {
-			response.FailWithDetailed(gin.H{"reload": true}, "未登录或非法访问", c)
-			c.Abort()
-			return
-		}
+		token := c.Query("token")
 		j := NewJWT()
-		// parseToken 解析token包含的信息
-		_, err := j.ParseToken(token)
+		claims, err := j.ParseToken(token)
 		if err != nil {
 			if err == TokenExpired {
 				response.FailWithDetailed(gin.H{"reload": true}, "授权已过期", c)
@@ -48,6 +29,13 @@ func JWTAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+		user, err := service.FindUser(claims.Username)
+		if err != nil {
+			response.FailWithDetailed(gin.H{"reload": true}, err.Error(), c)
+			c.Abort()
+			return
+		}
+		c.Set("token", user)
 		c.Next()
 	}
 }

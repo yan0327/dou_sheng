@@ -2,9 +2,7 @@ package v1
 
 import (
 	"net/http"
-	"simple-demo/middleware"
 	"simple-demo/model"
-	"simple-demo/model/response"
 	"simple-demo/service"
 	"strconv"
 
@@ -18,35 +16,25 @@ type UserListResponse struct {
 
 // RelationAction no practical effect, just check if token is valid
 func RelationAction(c *gin.Context) {
-	token := c.Query("token")
+	var user model.User
+	var err error
+	//user.Username = claims.Username
+	cUser, ok := c.Get("token")
+	if !ok {
+		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
+	}
+	user = cUser.(model.User)
 	followerID, _ := strconv.Atoi(c.Query("to_user_id"))
 
 	var isfollow uint8 = 0
 	action_type, _ := strconv.Atoi(c.Query("action_type"))
 
-	var err error
-	var user model.User
 	if uint8(action_type) == 1 {
 		isfollow = 1
 	} else {
 		isfollow = 0
 	}
-	j := middleware.NewJWT()
-	claims, err := j.ParseToken(token)
-	if err != nil {
-		if err == middleware.TokenExpired {
-			response.FailWithDetailed(gin.H{"reload": true}, "授权已过期", c)
-			c.Abort()
-			return
-		}
-		response.FailWithDetailed(gin.H{"reload": true}, err.Error(), c)
-		c.Abort()
-		return
-	}
-	user, err = service.FindUser(claims.Username)
-	if err != nil {
-		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
-	}
+
 	_, err = service.SetOrUpdateRelation(user.ID, uint(followerID), isfollow)
 	if err != nil {
 		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
@@ -57,26 +45,14 @@ func RelationAction(c *gin.Context) {
 
 // FollowList all users have same follow list
 func FollowList(c *gin.Context) {
-	token := c.Query("token")
-	j := middleware.NewJWT()
-	claims, err := j.ParseToken(token)
-	if err != nil {
-		if err == middleware.TokenExpired {
-			response.FailWithDetailed(gin.H{"reload": true}, "授权已过期", c)
-			c.Abort()
-			return
-		}
-		response.FailWithDetailed(gin.H{"reload": true}, err.Error(), c)
-		c.Abort()
-		return
-	}
+
 	var user model.User
 	var repley []model.ReplyUser
 	var followList []model.Realtion
-
+	var err error
 	//user.Username = claims.Username
-	user, err = service.FindUser(claims.Username)
-	if err != nil {
+	cUser, ok := c.Get("token")
+	if !ok {
 		c.JSON(http.StatusOK, UserListResponse{
 			Response: Response{
 				StatusCode: 0,
@@ -84,6 +60,8 @@ func FollowList(c *gin.Context) {
 			UserList: repley,
 		})
 	}
+	user = cUser.(model.User)
+
 	followList, err = service.GetFollowID(user.ID)
 	if err != nil {
 		c.JSON(http.StatusOK, UserListResponse{
@@ -138,26 +116,13 @@ func FollowList(c *gin.Context) {
 
 // FollowerList all users have same follower list
 func FollowerList(c *gin.Context) {
-	token := c.Query("token")
-	j := middleware.NewJWT()
-	claims, err := j.ParseToken(token)
-	if err != nil {
-		if err == middleware.TokenExpired {
-			response.FailWithDetailed(gin.H{"reload": true}, "授权已过期", c)
-			c.Abort()
-			return
-		}
-		response.FailWithDetailed(gin.H{"reload": true}, err.Error(), c)
-		c.Abort()
-		return
-	}
 	var user model.User
 	var repley []model.ReplyUser
 	var followList []model.Realtion
-
+	var err error
 	//user.Username = claims.Username
-	user, err = service.FindUser(claims.Username)
-	if err != nil {
+	cUser, ok := c.Get("token")
+	if !ok {
 		c.JSON(http.StatusOK, UserListResponse{
 			Response: Response{
 				StatusCode: 0,
@@ -165,6 +130,7 @@ func FollowerList(c *gin.Context) {
 			UserList: repley,
 		})
 	}
+	user = cUser.(model.User)
 	followList, err = service.GetFollowerID(user.ID)
 	if err != nil {
 		c.JSON(http.StatusOK, UserListResponse{

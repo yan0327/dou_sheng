@@ -238,3 +238,6 @@
 2022/05/23 04:48:21 {"callers":["/usr/local/bytedanceProject/simple-demo/main.go: 39 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653306501647183823}
 2022/05/23 04:49:52 {"callers":["/usr/local/bytedanceProject/simple-demo/main.go: 39 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653306592133583255}
 2022/05/23 04:57:21 {"callers":["/usr/local/bytedanceProject/simple-demo/main.go: 39 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653307041611568228}
+2022/05/23 05:16:06 {"callers":["/usr/local/bytedanceProject/simple-demo/main.go: 39 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653308166097842502}
+2022/05/23 05:19:33 {"callers":["/usr/local/bytedanceProject/simple-demo/main.go: 39 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653308373272258559}
+2022/05/23 05:30:56 {"callers":["/usr/local/bytedanceProject/simple-demo/main.go: 39 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653309056384377552}

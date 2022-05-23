@@ -17,7 +17,16 @@ func NewRouter() *gin.Engine {
 	privateGroup := r.Group("/douyin")
 	privateGroup.Use(middleware.JWTAuth())
 	{
-
+		privateGroup.POST("/relation/action/", v1.RelationAction)
+		privateGroup.GET("/relation/follow/list/", v1.FollowList)
+		privateGroup.GET("/relation/follower/list/", v1.FollowerList)
+		privateGroup.GET("/publish/list/", v1.PublishList)
+		// extra apis - I
+		privateGroup.POST("/favorite/action/", v1.FavoriteAction)
+		privateGroup.GET("/favorite/list/", v1.FavoriteList)
+		// extra apis - II
+		privateGroup.POST("/comment/action/", v1.CommentAction)
+		privateGroup.GET("/comment/list/", v1.CommentList)
 	}
 	publicGroup := r.Group("/douyin")
 	{
@@ -28,19 +37,8 @@ func NewRouter() *gin.Engine {
 
 		// basic apis
 
-		publicGroup.GET("/publish/list/", v1.PublishList)
 		publicGroup.GET("/user/", v1.UserInfo)
 
-		// extra apis - I
-		publicGroup.POST("/favorite/action/", v1.FavoriteAction)
-		publicGroup.GET("/favorite/list/", v1.FavoriteList)
-		publicGroup.POST("/comment/action/", v1.CommentAction)
-		publicGroup.GET("/comment/list/", v1.CommentList)
-
-		// extra apis - II
-		publicGroup.POST("/relation/action/", v1.RelationAction)
-		publicGroup.GET("/relation/follow/list/", v1.FollowList)
-		publicGroup.GET("/relation/follower/list/", v1.FollowerList)
 	}
 
 	return r

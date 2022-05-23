@@ -2,9 +2,7 @@ package v1
 
 import (
 	"net/http"
-	"simple-demo/middleware"
 	"simple-demo/model"
-	"simple-demo/model/response"
 	"simple-demo/service"
 	"strconv"
 
@@ -18,29 +16,19 @@ type CommentListResponse struct {
 
 // CommentAction no practical effect, just check if token is valid
 func CommentAction(c *gin.Context) {
-	token := c.Query("token")
 	VideoID, _ := strconv.Atoi(c.Query("video_id"))
 	action_type, _ := strconv.Atoi(c.Query("action_type"))
 	content_text := c.Query("comment_text")
 	comment_id, _ := strconv.Atoi(c.Query("comment_id"))
-	var err error
 	var user model.User
-	j := middleware.NewJWT()
-	claims, err := j.ParseToken(token)
-	if err != nil {
-		if err == middleware.TokenExpired {
-			response.FailWithDetailed(gin.H{"reload": true}, "授权已过期", c)
-			c.Abort()
-			return
-		}
-		response.FailWithDetailed(gin.H{"reload": true}, err.Error(), c)
-		c.Abort()
-		return
-	}
-	user, err = service.FindUser(claims.Username)
-	if err != nil {
+	var err error
+	//user.Username = claims.Username
+	cUser, ok := c.Get("token")
+	if !ok {
 		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
 	}
+	user = cUser.(model.User)
+
 	if uint8(action_type) == 1 {
 		err = service.CreateComment(user.ID, uint(VideoID), content_text)
 		if err != nil {
@@ -58,30 +46,22 @@ func CommentAction(c *gin.Context) {
 
 // CommentList all videos have same demo comment list
 func CommentList(c *gin.Context) {
-	token := c.Query("token")
 	VideoID, _ := strconv.Atoi(c.Query("video_id"))
-	var err error
 	var user model.User
+	var err error
+	//user.Username = claims.Username
+	cUser, ok := c.Get("token")
+	if !ok {
+		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
+	}
+	user = cUser.(model.User)
 	var comments []model.Comment
 	ReplyComment := []model.ReplyComment{}
-	j := middleware.NewJWT()
-	claims, err := j.ParseToken(token)
-	if err != nil {
-		if err == middleware.TokenExpired {
-			response.FailWithDetailed(gin.H{"reload": true}, "授权已过期", c)
-			c.Abort()
-			return
-		}
-		response.FailWithDetailed(gin.H{"reload": true}, err.Error(), c)
-		c.Abort()
-		return
-	}
-	user, err = service.FindUser(claims.Username)
+
+	comments, err = service.GetComments(uint(VideoID))
 	if err != nil {
 		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
-		return
 	}
-	comments, err = service.GetComments(uint(VideoID))
 	for i := 0; i < len(comments); i++ {
 		reply := model.ReplyComment{
 			ID:         comments[i].ID,

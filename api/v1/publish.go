@@ -87,32 +87,18 @@ func Publish(c *gin.Context) {
 
 // PublishList all users have same publish video list
 func PublishList(c *gin.Context) {
-	token := c.Query("token")
-	userID, _ := strconv.Atoi(c.Query("user_id"))
-	j := middleware.NewJWT()
-	claims, err := j.ParseToken(token)
-	if err != nil {
-		if err == middleware.TokenExpired {
-			response.FailWithDetailed(gin.H{"reload": true}, "授权已过期", c)
-			c.Abort()
-			return
-		}
-		response.FailWithDetailed(gin.H{"reload": true}, err.Error(), c)
-		c.Abort()
-		return
+	var user model.User
+	var err error
+	//user.Username = claims.Username
+	cUser, ok := c.Get("token")
+	if !ok {
+		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
 	}
+	user = cUser.(model.User)
+	userID, _ := strconv.Atoi(c.Query("user_id"))
 
 	var video []model.ReplyVideo
-	var user model.User
-	user.Username = claims.Username
-	user, err = service.FindUser(claims.Username)
-	if err != nil {
-		c.JSON(http.StatusOK, Response{
-			StatusCode: 1,
-			StatusMsg:  err.Error(),
-		})
-		return
-	}
+
 	video, err = service.PublishVideo(user.ID, uint(userID))
 	if err != nil {
 		c.JSON(http.StatusOK, Response{
