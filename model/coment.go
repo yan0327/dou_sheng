@@ -14,7 +14,7 @@ type ReplyComment struct {
 	User       ReplyUser `json:"user"`
 	VideoId    uint      `json:"video_id,omitempty"`
 	Content    string    `json:"content,omitempty"`
-	CreateTime time.Time `json:"create_time,omitempty"`
+	CreateTime string    `json:"create_date,omitempty"`
 }
 
 func (this Comment) TableName() string {

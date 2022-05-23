@@ -86,7 +86,7 @@ func CommentList(c *gin.Context) {
 		reply := model.ReplyComment{
 			ID:         comments[i].ID,
 			Content:    comments[i].Content,
-			CreateTime: comments[i].CreateTime,
+			CreateTime: comments[i].CreateTime.Format("2006-01-02 15:04:05"),
 		}
 		replyuser, err := service.FindReplyUser(user.ID, comments[i].UserId)
 		if err != nil {

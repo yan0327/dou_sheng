@@ -9,6 +9,7 @@ import (
 	"simple-demo/model"
 	"simple-demo/model/response"
 	"simple-demo/pkg/util"
+	"strconv"
 	"strings"
 	"time"
 
@@ -19,7 +20,7 @@ import (
 
 type VideoListResponse struct {
 	Response
-	VideoList []model.Video `json:"video_list"`
+	VideoList []model.ReplyVideo `json:"video_list"`
 }
 type LikeListResponse struct {
 	Response
@@ -61,6 +62,7 @@ func Publish(c *gin.Context) {
 		})
 		return
 	}
+	video.Title = title
 	finalName := fmt.Sprintf("%d_%s_%s", user.ID, title, filename)
 	saveFile := filepath.Join("./public/upload", finalName)
 	video.PlayUrl = "http://192.168.30.128:8080/static/" + finalName
@@ -86,6 +88,7 @@ func Publish(c *gin.Context) {
 // PublishList all users have same publish video list
 func PublishList(c *gin.Context) {
 	token := c.Query("token")
+	userID, _ := strconv.Atoi(c.Query("user_id"))
 	j := middleware.NewJWT()
 	claims, err := j.ParseToken(token)
 	if err != nil {
@@ -99,7 +102,7 @@ func PublishList(c *gin.Context) {
 		return
 	}
 
-	var video []model.Video
+	var video []model.ReplyVideo
 	var user model.User
 	user.Username = claims.Username
 	user, err = service.FindUser(claims.Username)
@@ -110,7 +113,7 @@ func PublishList(c *gin.Context) {
 		})
 		return
 	}
-	video, err = service.PublishVideo(user.ID)
+	video, err = service.PublishVideo(user.ID, uint(userID))
 	if err != nil {
 		c.JSON(http.StatusOK, Response{
 			StatusCode: 1,

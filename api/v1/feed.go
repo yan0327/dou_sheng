@@ -70,6 +70,7 @@ func Feed(c *gin.Context) {
 				Response: Response{StatusCode: 2},
 			})
 		}
+		replyvideo.Title = videos[i].Title
 		ReplyVideo = append(ReplyVideo, replyvideo)
 	}
 	c.JSON(http.StatusOK, FeedResponse{

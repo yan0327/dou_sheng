@@ -26,7 +26,7 @@ func FindUser(username string) (user model.User, err error) {
 }
 func FindReplyUser(UserID uint, GoalID uint) (reply model.ReplyUser, err error) {
 	var user model.User
-	err = global.DBEngine.Where("id = ?", GoalID).Find(&user).Error
+	err = global.DBEngine.Model(&model.User{}).Where("id = ?", GoalID).Find(&user).Error
 	if err != nil {
 		return
 	}
@@ -41,6 +41,5 @@ func FindReplyUser(UserID uint, GoalID uint) (reply model.ReplyUser, err error) 
 		return
 	}
 	reply.IsFollow = IsFollow(UserID, GoalID)
-
 	return
 }

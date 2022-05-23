@@ -53,7 +53,7 @@ func FavoriteAction(c *gin.Context) {
 // FavoriteList all users have same favorite video list
 func FavoriteList(c *gin.Context) {
 	token := c.Query("token")
-	//user_id := c.Query("user_id")
+	userID, _ := strconv.Atoi(c.Query("user_id"))
 	var err error
 	var user model.User
 	j := middleware.NewJWT()
@@ -74,7 +74,7 @@ func FavoriteList(c *gin.Context) {
 	}
 	ReplyVideos := []model.ReplyVideo{}
 	//ReplyVideos, err = service.FavoriteList(user_id)
-	ReplyVideos, err = service.FavoriteList(user.ID)
+	ReplyVideos, err = service.FavoriteList(user.ID, uint(userID))
 	if err != nil {
 		c.JSON(http.StatusOK, LikeListResponse{
 			Response: Response{

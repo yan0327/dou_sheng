@@ -176,9 +176,9 @@ func FollowerList(c *gin.Context) {
 	}
 	for i := 0; i < len(followList); i++ {
 		follower := model.ReplyUser{
-			ID: followList[i].FollowerId,
+			ID: followList[i].UserId,
 		}
-		information, err := service.FindAuthor(followList[i].FollowerId)
+		information, err := service.FindAuthor(followList[i].UserId)
 		if err != nil {
 			c.JSON(http.StatusOK, UserListResponse{
 				Response: Response{
@@ -206,7 +206,7 @@ func FollowerList(c *gin.Context) {
 				UserList: repley,
 			})
 		}
-		follower.IsFollow = service.IsFollow(user.ID, follower.ID)
+		follower.IsFollow = service.IsFollow(follower.ID, user.ID)
 		repley = append(repley, follower)
 	}
 	c.JSON(http.StatusOK, UserListResponse{

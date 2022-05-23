@@ -41,7 +41,7 @@ func GetLikeVideoID(ID uint) (users []model.Like, err error) {
 	err = global.DBEngine.Model(&model.Like{}).Where("user_id = ? AND action_type = ?", ID, "1").Find(&users).Error
 	return
 }
-func FavoriteList(ID uint) (replys []model.ReplyVideo, err error) {
+func FavoriteList(userID, ID uint) (replys []model.ReplyVideo, err error) {
 	var videos []model.Like
 	videos, err = GetLikeVideoID(ID)
 	for i := 0; i < len(videos); i++ {
@@ -60,8 +60,17 @@ func FavoriteList(ID uint) (replys []model.ReplyVideo, err error) {
 		if err != nil {
 			return
 		}
-		reply.IsFavorite = true
+		reply.IsFavorite = IsLike(userID, ID)
 		replys = append(replys, reply)
 	}
 	return
+}
+
+func IsLike(FollowID uint, VideoID uint) (Islike bool) {
+	var real model.Like
+	global.DBEngine.Model(&model.Like{}).Where("user_id = ? AND video_id = ?", FollowID, VideoID).Find(&real)
+	if real.ActionType != 1 {
+		return false
+	}
+	return true
 }

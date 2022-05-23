@@ -110,7 +110,7 @@ func UserInfo(c *gin.Context) {
 	}
 
 	//user.Username = claims.Username
-	reply, err = service.FindReplyUser(user.ID, user.ID)
+	reply, err = service.FindReplyUser(user.ID, uint(req.UserId))
 	if err != nil {
 		res.ToResponse(UserInfoResponse{
 			Response: Response{StatusCode: 1},

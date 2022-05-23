@@ -1,9 +1,9 @@
 package model
 
 type User struct {
-	ID       uint   `json:"id,omitempty" gorm:"primarykey"`
-	Username string `json:"username,omitempty"`
-	Password string `json:"password,omitempty"`
+	ID       uint   `json:"id" gorm:"primarykey"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 type ReplyUser struct {

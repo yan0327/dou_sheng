@@ -33,6 +33,7 @@ CREATE TABLE `tiktok_video`
     `play_url` varchar(191) DEFAULT NULL COMMENT '播放视频路径',
     `cover_url` varchar(191) DEFAULT NULL COMMENT '封面图片路径',
     `create_time` timestamp           NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `title` varchar(40) DEFAULT NULL COMMENT '标题',
     PRIMARY KEY (`id`),
     INDEX author_id (`author_id`)
 ) ENGINE = InnoDB
