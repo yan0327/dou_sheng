@@ -43,6 +43,13 @@ type DatabaseSettingS struct {
 	MaxOpenConns int
 }
 
+type S3StoreSettingS struct {
+	EndPoint        string
+	AccessKeyId     string
+	SecretAccessKey string
+	BucketName      string
+}
+
 var sections = make(map[string]interface{})
 
 func (s *Setting) ReadSection(k string, v interface{}) error {

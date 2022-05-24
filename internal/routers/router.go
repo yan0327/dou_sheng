@@ -2,19 +2,23 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"simple-demo/internal/dao"
 	"simple-demo/internal/dao/store"
 	"simple-demo/internal/middleware"
 	"simple-demo/internal/middleware/auth"
-	global2 "simple-demo/internal/pkg/global"
+	global "simple-demo/internal/pkg/global"
 	"simple-demo/internal/routers/controller"
 )
 
 func NewRouter() *gin.Engine {
 	factory := dao.MakeDaoFactory(
-		global2.DBEngine,
-		store.MakeFileStore(global2.AppSetting.UploadSavePath),
+		global.DBEngine,
+		store.MakeS3PoolStore(
+			global.S3StoreSetting.EndPoint,
+			global.S3StoreSetting.AccessKeyId,
+			global.S3StoreSetting.SecretAccessKey,
+			global.S3StoreSetting.BucketName,
+		),
 	)
 	user := api.MakeUserController(factory)
 	video := api.MakeVideoController(factory)
@@ -24,7 +28,7 @@ func NewRouter() *gin.Engine {
 	r := gin.Default()
 	regisMiddleWare(r)
 
-	r.StaticFS("/static", http.Dir(global2.AppSetting.UploadSavePath))
+	//r.StaticFS("/static", http.Dir(global.AppSetting.UploadSavePath))
 
 	apiRouter := r.Group("/douyin")
 	{
@@ -46,6 +50,9 @@ func NewRouter() *gin.Engine {
 		apiRouter.POST("/relation/action/", auth.AuthMiddleware, user.RelationAction)
 		apiRouter.GET("/relation/follow/list/", auth.AuthMiddleware, user.FollowList)
 		apiRouter.GET("/relation/follower/list/", auth.AuthMiddleware, user.FollowerList)
+
+		// 视频数据流
+		apiRouter.GET("/video/:id", video.VideoData)
 	}
 
 	return r

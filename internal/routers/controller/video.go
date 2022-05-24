@@ -3,6 +3,8 @@ package api
 import (
 	"bufio"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"net/http"
 	"simple-demo/internal/dao"
 	"simple-demo/internal/middleware/auth"
 	"simple-demo/internal/model"
@@ -85,6 +87,21 @@ func (v *VideoController) processIsFollow(c *gin.Context, list []*model.Video) {
 			}
 		}
 	}
+}
+
+func (v *VideoController) VideoData(c *gin.Context) {
+	// TODO 视频格式问题
+	r, e := v.video.DataStream(c.Param("id"))
+	if e != nil {
+		api.RespWithErr(c, e)
+		return
+	}
+	b, err := ioutil.ReadAll(r)
+	if err != nil {
+		api.RespWithErr(c, errcode.ServerError.WithDetails(err.Error()))
+		return
+	}
+	c.Data(http.StatusOK, "video/mp4", b)
 }
 
 func (v *VideoController) Feed(c *gin.Context) {

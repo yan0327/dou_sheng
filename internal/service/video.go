@@ -10,6 +10,7 @@ import (
 )
 
 type VideoSrv interface {
+	DataStream(name string) (io.Reader, *errcode.Error)
 	Feed(latestTime int64) ([]*model.Video, *errcode.Error)
 	FindByUser(userId int64) ([]*model.Video, *errcode.Error)
 	Publish(userId int64, title string, r io.Reader) *errcode.Error
@@ -47,7 +48,7 @@ func (srv *videoService) Publish(userId int64, title string, r io.Reader) *errco
 	}
 	if _, err := srv.db.Create(&model.Video{
 		AuthorId: userId,
-		PlayUrl:  "http://10.0.2.2:8080/static/" + id, //TODO 播放链接处理
+		PlayUrl:  "http://10.0.2.2:8080/douyin/video/" + id, //TODO 播放链接处理
 		Title:    title,
 	}); err != nil {
 		srv.store.Delete(id)
@@ -55,4 +56,12 @@ func (srv *videoService) Publish(userId int64, title string, r io.Reader) *errco
 	}
 
 	return nil
+}
+
+func (srv *videoService) DataStream(name string) (io.Reader, *errcode.Error) {
+	r, err := srv.store.Get(name)
+	if err != nil {
+		return nil, errcode.ServerError.WithDetails(err.Error())
+	}
+	return r, nil
 }

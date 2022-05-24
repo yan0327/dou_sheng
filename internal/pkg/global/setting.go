@@ -10,5 +10,6 @@ var (
 	AppSetting      *setting.AppSettingS
 	JWTSetting      *setting.JWTSettingS
 	DatabaseSetting *setting.DatabaseSettingS
+	S3StoreSetting  *setting.S3StoreSettingS
 	Logger          *logger.Logger
 )

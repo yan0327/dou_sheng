@@ -11,7 +11,7 @@ App:
   LogSavePath: storage/logs
   LogFileName: app
   LogFileExt: .log
-  UploadSavePath: storage/uploads
+  UploadSavePath: /Users/xuqing/Desktop/upload
   UploadServerUrl: http://127.0.0.1:8080/upload
   UploadImageMaxSize: 512  # MB
   UploadImageAllowExts:
@@ -36,3 +36,9 @@ Database:
   ParseTime: True
   MaxIdleConns: 10
   MaxOpenConns: 30
+
+S3Store:
+  EndPoint: localhost:9000
+  AccessKeyId: minioadmin
+  SecretAccessKey: minioadmin
+  BucketName: douyin

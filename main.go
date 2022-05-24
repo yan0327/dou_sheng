@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 	"simple-demo/internal/model"
-	global2 "simple-demo/internal/pkg/global"
+	global "simple-demo/internal/pkg/global"
 	"simple-demo/internal/routers"
 	"simple-demo/pkg/logger"
 
@@ -55,12 +55,12 @@ func init() {
 func main() {
 	router := routers.NewRouter()
 	s := &http.Server{
-		Addr:         ":" + global2.ServerSetting.HttpPort,
+		Addr:         ":" + global.ServerSetting.HttpPort,
 		Handler:      router,
-		ReadTimeout:  global2.ServerSetting.ReadTimeout,
-		WriteTimeout: global2.ServerSetting.WriteTimeout,
+		ReadTimeout:  global.ServerSetting.ReadTimeout,
+		WriteTimeout: global.ServerSetting.WriteTimeout,
 	}
-	global2.Logger.Info(context.Background(), "启动抖音APP服务")
+	global.Logger.Info(context.Background(), "启动抖音APP服务")
 	log.Println("启动抖音APP服务")
 	if err := s.ListenAndServe(); err != nil {
 		panic(err)
@@ -81,32 +81,36 @@ func setupSetting() error {
 	if err != nil {
 		return err
 	}
-	err = s.ReadSection("Server", &global2.ServerSetting)
+	err = s.ReadSection("Server", &global.ServerSetting)
 	if err != nil {
 		return err
 	}
-	err = s.ReadSection("App", &global2.AppSetting)
+	err = s.ReadSection("App", &global.AppSetting)
 	if err != nil {
 		return err
 	}
-	err = s.ReadSection("Database", &global2.DatabaseSetting)
+	err = s.ReadSection("Database", &global.DatabaseSetting)
 	if err != nil {
 		return err
 	}
-	err = s.ReadSection("JWT", &global2.JWTSetting)
+	err = s.ReadSection("JWT", &global.JWTSetting)
+	if err != nil {
+		return err
+	}
+	err = s.ReadSection("S3Store", &global.S3StoreSetting)
 	if err != nil {
 		return err
 	}
 
-	global2.AppSetting.DefaultContextTimeout *= time.Second
-	global2.JWTSetting.Expire *= time.Second
-	global2.ServerSetting.ReadTimeout *= time.Second
-	global2.ServerSetting.WriteTimeout *= time.Second
+	global.AppSetting.DefaultContextTimeout *= time.Second
+	global.JWTSetting.Expire *= time.Second
+	global.ServerSetting.ReadTimeout *= time.Second
+	global.ServerSetting.WriteTimeout *= time.Second
 	if port != "" {
-		global2.ServerSetting.HttpPort = port
+		global.ServerSetting.HttpPort = port
 	}
 	if runMode != "" {
-		global2.ServerSetting.RunMode = runMode
+		global.ServerSetting.RunMode = runMode
 	}
 
 	return nil
@@ -120,14 +124,14 @@ func setupLogger() error {
 	//	MaxAge:    10,
 	//	LocalTime: true,
 	//}, "", log.LstdFlags).WithCaller(2)
-	global2.Logger = logger.NewLogger(os.Stdout, "", log.LstdFlags)
+	global.Logger = logger.NewLogger(os.Stdout, "", log.LstdFlags)
 
 	return nil
 }
 
 func setupDBEngine() error {
 	var err error
-	global2.DBEngine, err = model.NewDBEngine(global2.DatabaseSetting)
+	global.DBEngine, err = model.NewDBEngine(global.DatabaseSetting)
 	if err != nil {
 		return err
 	}
@@ -148,6 +152,6 @@ func setupTracer() error {
 	if err != nil {
 		return err
 	}
-	global2.Tracer = jaegerTracer
+	global.Tracer = jaegerTracer
 	return nil
 }
