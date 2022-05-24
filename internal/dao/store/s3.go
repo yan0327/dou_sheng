@@ -38,10 +38,6 @@ func MakeS3PoolStore(endpoint string, accessKeyId string, secretAccessKey string
 			},
 		},
 	}
-	for i := 0; i < 20; i++ {
-		client, _ := minio.New(endpoint, accessKeyId, secretAccessKey, false)
-		s.pool.Put(client)
-	}
 	return s
 }
 

@@ -3,7 +3,7 @@ package api
 import (
 	"bufio"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"simple-demo/internal/dao"
 	"simple-demo/internal/middleware/auth"
@@ -96,12 +96,16 @@ func (v *VideoController) VideoData(c *gin.Context) {
 		api.RespWithErr(c, e)
 		return
 	}
-	b, err := ioutil.ReadAll(r)
-	if err != nil {
-		api.RespWithErr(c, errcode.ServerError.WithDetails(err.Error()))
-		return
-	}
-	c.Data(http.StatusOK, "video/mp4", b)
+	c.Status(http.StatusOK)
+	//io.Copy(c.Writer, r)
+	c.Stream(func(w io.Writer) bool {
+		buf := make([]byte, 1024*100)
+		if n, _ := r.Read(buf); n == 0 {
+			return false
+		}
+		w.Write(buf)
+		return true
+	})
 }
 
 func (v *VideoController) Feed(c *gin.Context) {
