@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"context"
-	"simple-demo/global"
+	"simple-demo/internal/pkg/global"
 
 	"github.com/opentracing/opentracing-go/ext"
 

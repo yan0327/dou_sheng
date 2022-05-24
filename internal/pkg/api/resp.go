@@ -1,7 +1,9 @@
 package api
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"reflect"
 	"simple-demo/internal/pkg/errcode"
 )
 
@@ -10,7 +12,7 @@ const (
 	StatusMsg  = "status_msg"
 )
 
-func Resp(ctx *gin.Context, e *errcode.Error, data gin.H) {
+func Resp(ctx *gin.Context, e *errcode.Error, data interface{}) {
 	if e == nil {
 		e = errcode.Success
 	}
@@ -21,19 +23,35 @@ func Resp(ctx *gin.Context, e *errcode.Error, data gin.H) {
 		})
 		return
 	}
+	var ret gin.H
 	if data == nil {
-		data = gin.H{}
+		ret = gin.H{}
+	} else {
+		// 转成map
+		v := reflect.TypeOf(data)
+		if v.Kind() == reflect.Map {
+			ret = data.(gin.H)
+		} else {
+			if v.Kind() == reflect.Ptr {
+				v = v.Elem()
+			}
+			if v.Kind() == reflect.Struct {
+				// TODO 优化性能
+				bytes, _ := json.Marshal(&data)
+				json.Unmarshal(bytes, &ret)
+			}
+		}
 	}
-	data[StatusCode] = errcode.Success.Code()
-	data[StatusMsg] = errcode.Success.Msg()
-	ctx.JSON(errcode.Success.HTTPStatus(), data)
+	ret[StatusCode] = errcode.Success.Code()
+	ret[StatusMsg] = errcode.Success.Msg()
+	ctx.JSON(errcode.Success.HTTPStatus(), ret)
 }
 
 func RespWithErr(ctx *gin.Context, e *errcode.Error) {
 	Resp(ctx, e, nil)
 }
 
-func RespWithData(ctx *gin.Context, data gin.H) {
+func RespWithData(ctx *gin.Context, data interface{}) {
 	Resp(ctx, errcode.Success, data)
 }
 

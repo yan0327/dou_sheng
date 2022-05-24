@@ -5,18 +5,17 @@ import (
 	"flag"
 	"log"
 	"net/http"
-	"simple-demo/global"
+	"os"
 	"simple-demo/internal/model"
+	global2 "simple-demo/internal/pkg/global"
 	"simple-demo/internal/routers"
-
 	"simple-demo/pkg/logger"
+
 	"simple-demo/pkg/setting"
 
 	"simple-demo/pkg/tracer"
 	"strings"
 	"time"
-
-	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var (
@@ -39,10 +38,6 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupLogger err: %v", err)
 	}
-	err = setupDBEngine()
-	if err != nil {
-		log.Fatalf("init.setupDBEngine err: %v", err)
-	}
 	// err = setupValidator()
 	// if err != nil {
 	// 	log.Fatalf("init.setupValidator err: %v", err)
@@ -51,17 +46,21 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupTracer err: %v", err)
 	}
+	err = setupDBEngine()
+	if err != nil {
+		log.Fatalf("init.setupDBEngine err: %v", err)
+	}
 }
 
 func main() {
 	router := routers.NewRouter()
 	s := &http.Server{
-		Addr:         ":" + global.ServerSetting.HttpPort,
+		Addr:         ":" + global2.ServerSetting.HttpPort,
 		Handler:      router,
-		ReadTimeout:  global.ServerSetting.ReadTimeout,
-		WriteTimeout: global.ServerSetting.WriteTimeout,
+		ReadTimeout:  global2.ServerSetting.ReadTimeout,
+		WriteTimeout: global2.ServerSetting.WriteTimeout,
 	}
-	global.Logger.Info(context.Background(), "启动抖音APP服务")
+	global2.Logger.Info(context.Background(), "启动抖音APP服务")
 	log.Println("启动抖音APP服务")
 	if err := s.ListenAndServe(); err != nil {
 		panic(err)
@@ -82,52 +81,53 @@ func setupSetting() error {
 	if err != nil {
 		return err
 	}
-	err = s.ReadSection("Server", &global.ServerSetting)
+	err = s.ReadSection("Server", &global2.ServerSetting)
 	if err != nil {
 		return err
 	}
-	err = s.ReadSection("App", &global.AppSetting)
+	err = s.ReadSection("App", &global2.AppSetting)
 	if err != nil {
 		return err
 	}
-	err = s.ReadSection("Database", &global.DatabaseSetting)
+	err = s.ReadSection("Database", &global2.DatabaseSetting)
 	if err != nil {
 		return err
 	}
-	err = s.ReadSection("JWT", &global.JWTSetting)
+	err = s.ReadSection("JWT", &global2.JWTSetting)
 	if err != nil {
 		return err
 	}
 
-	global.AppSetting.DefaultContextTimeout *= time.Second
-	global.JWTSetting.Expire *= time.Second
-	global.ServerSetting.ReadTimeout *= time.Second
-	global.ServerSetting.WriteTimeout *= time.Second
+	global2.AppSetting.DefaultContextTimeout *= time.Second
+	global2.JWTSetting.Expire *= time.Second
+	global2.ServerSetting.ReadTimeout *= time.Second
+	global2.ServerSetting.WriteTimeout *= time.Second
 	if port != "" {
-		global.ServerSetting.HttpPort = port
+		global2.ServerSetting.HttpPort = port
 	}
 	if runMode != "" {
-		global.ServerSetting.RunMode = runMode
+		global2.ServerSetting.RunMode = runMode
 	}
 
 	return nil
 }
 
 func setupLogger() error {
-	fileName := global.AppSetting.LogSavePath + "/" + global.AppSetting.LogFileName + global.AppSetting.LogFileExt
-	global.Logger = logger.NewLogger(&lumberjack.Logger{
-		Filename:  fileName,
-		MaxSize:   500,
-		MaxAge:    10,
-		LocalTime: true,
-	}, "", log.LstdFlags).WithCaller(2)
+	//fileName := global.AppSetting.LogSavePath + "/" + global.AppSetting.LogFileName + global.AppSetting.LogFileExt
+	//global.Logger = logger.NewLogger(&lumberjack.Logger{
+	//	Filename:  fileName,
+	//	MaxSize:   500,
+	//	MaxAge:    10,
+	//	LocalTime: true,
+	//}, "", log.LstdFlags).WithCaller(2)
+	global2.Logger = logger.NewLogger(os.Stdout, "", log.LstdFlags)
 
 	return nil
 }
 
 func setupDBEngine() error {
 	var err error
-	global.DBEngine, err = model.NewDBEngine(global.DatabaseSetting)
+	global2.DBEngine, err = model.NewDBEngine(global2.DatabaseSetting)
 	if err != nil {
 		return err
 	}
@@ -144,10 +144,10 @@ func setupDBEngine() error {
 // }
 
 func setupTracer() error {
-	jaegerTracer, _, err := tracer.NewJaegerTracer("simple_demo_tictok", "127.0.0.1:6831")
+	jaegerTracer, _, err := tracer.NewJaegerTracer("simple_demo_tiktok", "127.0.0.1:6831")
 	if err != nil {
 		return err
 	}
-	global.Tracer = jaegerTracer
+	global2.Tracer = jaegerTracer
 	return nil
 }

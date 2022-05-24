@@ -28,14 +28,15 @@ DROP TABLE IF EXISTS `tiktok_video`;
 CREATE TABLE `tiktok_video`
 (
     `id`          bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '视频id',
+    `title`       varchar(191) NOT NULL COMMENT '视频标题',
     `author_id`   bigint(20) unsigned NOT NULL COMMENT '作者id',
-    `play_url` varchar(191) DEFAULT NULL COMMENT '播放视频路径',
-    `cover_url` varchar(191) DEFAULT NULL COMMENT '封面图片路径',
-    `create_time` timestamp           NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `play_url`    varchar(191) DEFAULT NULL COMMENT '播放视频路径',
+    `cover_url`   varchar(191) DEFAULT NULL COMMENT '封面图片路径',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`),
     INDEX author_id (`author_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4 COMMENT ='视频表';
+DEFAULT CHARSET = utf8mb4 COMMENT ='视频表';
 
   DROP TABLE IF EXISTS `tiktok_video_like`;
 CREATE TABLE `tiktok_video_like`

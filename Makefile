@@ -5,6 +5,10 @@ server:
 	@go build -o $(OUTPUT_DIR)/server main.go
 	@echo "编译产物位于 $(OUTPUT_DIR)"
 
+# Docker镜像
+#.PHONY: image
+#image:
+
 .PHONY: clean
 clean:
 	@echo "清空 $(OUTPUT_DIR)"

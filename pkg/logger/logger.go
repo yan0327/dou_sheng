@@ -155,49 +155,49 @@ func (l *Logger) Output(level Level, message string) {
 }
 
 func (l *Logger) Debug(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelDebug, fmt.Sprint(v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelDebug, fmt.Sprint(v...))
 }
 
 func (l *Logger) Debugf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelDebug, fmt.Sprintf(format, v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelDebug, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Info(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelInfo, fmt.Sprint(v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelInfo, fmt.Sprint(v...))
 }
 
 func (l *Logger) Infof(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelInfo, fmt.Sprintf(format, v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelInfo, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Warn(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelWarn, fmt.Sprint(v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelWarn, fmt.Sprint(v...))
 }
 
 func (l *Logger) Warnf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelWarn, fmt.Sprintf(format, v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelWarn, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Error(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelError, fmt.Sprint(v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelError, fmt.Sprint(v...))
 }
 
 func (l *Logger) Errorf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelError, fmt.Sprintf(format, v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelError, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Fatal(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelFatal, fmt.Sprint(v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelFatal, fmt.Sprint(v...))
 }
 
 func (l *Logger) Fatalf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelFatal, fmt.Sprintf(format, v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelFatal, fmt.Sprintf(format, v...))
 }
 
 func (l *Logger) Panic(ctx context.Context, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelPanic, fmt.Sprint(v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelPanic, fmt.Sprint(v...))
 }
 
 func (l *Logger) Panicf(ctx context.Context, format string, v ...interface{}) {
-	l.WithContext(ctx).WithTrace().Output(LevelPanic, fmt.Sprintf(format, v...))
+	l.WithContext(ctx).WithTrace().WithCaller(2).Output(LevelPanic, fmt.Sprintf(format, v...))
 }
