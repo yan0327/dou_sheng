@@ -28,7 +28,7 @@ func (f *Favorite) FavoriteAction(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.FavoriteAction(&params)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.FavoriteAction err: %v", err)

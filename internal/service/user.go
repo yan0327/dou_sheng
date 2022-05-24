@@ -1,9 +1,7 @@
 package service
 
 import (
-	"errors"
 	"simple-demo/internal/model"
-	"simple-demo/pkg/app"
 )
 
 type UserLoginRequest struct {
@@ -12,7 +10,7 @@ type UserLoginRequest struct {
 }
 
 type UserInfoRequest struct {
-	UserId uint32 `form:"user_id"`
+	UserId int64  `form:"user_id"`
 	Token  string `form:"token"`
 }
 
@@ -23,30 +21,36 @@ type UserRegisterRequest struct {
 
 type UserLoginResponse struct {
 	*Response
-	UserId uint32 `json:"user_id,omitempty"`
+	UserId int64  `json:"user_id,omitempty"`
 	Token  string `json:"token"`
 }
 
 type UserInfoResponse struct {
 	*Response
-	User model.User `json:"user"`
+	User *model.User `json:"user"`
 }
 
 type UserRegisterRespond struct {
 	*Response
-	UserId uint32 `json:"user_id"`
+	UserId int64  `json:"user_id"`
 	Token  string `json:"token"`
 }
 
 func (svc *Service) UserInfo(params *UserInfoRequest) (*UserInfoResponse, error) {
-	claims, err := app.ParseToken(params.Token)
-	if err != nil {
-		return nil, errors.New("token 不存在")
+	username, _ := svc.ctx.Get("username")
+	user, err := svc.cache.GetUserStates(username.(string))
+	if err == nil {
+		return &UserInfoResponse{
+			Response: &Response{StatusCode: 0, StatusMsg: "success"},
+			User:     user,
+		}, nil
 	}
-	user, err := svc.dao.GetUserInfo(claims.AppKey)
+	user, err = svc.dao.GetUserInfo(username.(string))
 	if err != nil {
 		return nil, err
 	}
+	svc.cache.WriteUserState(user.ID, user.UserName, user.FollowCount, user.FollowerCount)
+
 	return &UserInfoResponse{
 		Response: &Response{StatusCode: 0, StatusMsg: "success"},
 		User:     user,
@@ -54,24 +58,27 @@ func (svc *Service) UserInfo(params *UserInfoRequest) (*UserInfoResponse, error)
 }
 
 func (svc *Service) UserRegister(params *UserRegisterRequest) (*UserRegisterRespond, error) {
-	id, err := svc.dao.UserRegister(params.UserName, params.PassWord)
+	user, err := svc.dao.UserRegister(params.UserName, params.PassWord)
 	if err != nil {
 		return nil, err
 	}
+	svc.cache.WriteUserState(user.ID, user.UserName, user.FollowCount, user.FollowerCount)
 	respond := &UserRegisterRespond{
-		UserId:   id,
+		UserId:   user.ID,
 		Response: &Response{StatusCode: 0, StatusMsg: "success"},
 	}
 	return respond, nil
 }
 
 func (svc *Service) UserLogin(params *UserLoginRequest) (*UserLoginResponse, error) {
-	id, err := svc.dao.UserLogin(params.UserName, params.PassWord)
+	user, err := svc.dao.UserLogin(params.UserName, params.PassWord)
 	if err != nil {
 		return nil, err
 	}
+	svc.cache.WriteUserState(user.ID, user.UserName, user.FollowCount, user.FollowerCount)
+
 	respond := &UserLoginResponse{
-		UserId:   id,
+		UserId:   user.ID,
 		Response: &Response{StatusCode: 0, StatusMsg: "success"},
 	}
 	return respond, nil

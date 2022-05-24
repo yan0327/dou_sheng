@@ -28,7 +28,7 @@ func (u *User) Login(c *gin.Context) {
 		return
 	}
 	param.PassWord = util.EncodeMD5(param.PassWord)
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.UserLogin(&param)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.Login err: %v", err)
@@ -42,7 +42,6 @@ func (u *User) Login(c *gin.Context) {
 		response.ToErrorResponse(errcode.UnauthorizedTokenGenerate)
 		return
 	}
-
 	respond.Token = token
 	c.JSON(http.StatusOK, respond)
 }
@@ -58,7 +57,7 @@ func (u *User) UserInfo(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.UserInfo(&params)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.UserInfo err: %v", err)
@@ -80,7 +79,7 @@ func (u *User) Register(c *gin.Context) {
 		return
 	}
 	param.PassWord = util.EncodeMD5(param.PassWord)
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.UserRegister(&param)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.CreateTag err: %v", err)

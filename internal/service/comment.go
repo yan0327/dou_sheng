@@ -1,23 +1,21 @@
 package service
 
 import (
-	"errors"
 	"simple-demo/internal/model"
-	"simple-demo/pkg/app"
 )
 
 type CommentRequest struct {
-	UserId      uint32 `form:"user_id"`
-	VideoId     uint32 `form:"video_id"`
+	UserId      int64  `form:"user_id"`
+	VideoId     int64  `form:"video_id"`
 	ActionType  uint8  `form:"action_type"`
 	CommentText string `form:"comment_text"`
-	CommentId   uint32 `form:"comment_id"`
+	CommentId   int64  `form:"comment_id"`
 	Token       string `form:"token"`
 }
 
 type CommentListRequest struct {
-	UserId  uint32 `form:"user_id"`
-	VideoId uint32 `form:"video_id"`
+	UserId  int64  `form:"user_id"`
+	VideoId int64  `form:"video_id"`
 	Token   string `form:"token"`
 }
 
@@ -26,31 +24,26 @@ type CommentListResponse struct {
 	CommentList []model.Comment `json:"comment_list,omitempty"`
 }
 
-func (svc *Service) CreateComment(params *CommentRequest) (*Response, error) {
+func (svc *Service) CreateComment(params *CommentRequest) (*CommentListResponse, error) {
 	if params.ActionType == 2 && params.CommentId == 0 {
-		return &Response{StatusCode: 200, StatusMsg: "not comment"}, nil
+		return &CommentListResponse{Response: &Response{StatusCode: 500, StatusMsg: "not comment"}}, nil
 	}
 	if params.ActionType == 1 && params.CommentText == "" {
-		return &Response{StatusCode: 200, StatusMsg: "not comment"}, nil
+		return &CommentListResponse{Response: &Response{StatusCode: 500, StatusMsg: "not comment"}}, nil
 	}
-	claims, err := app.ParseToken(params.Token)
-	if err != nil {
-		return nil, errors.New("token 不存在")
-	}
-	err = svc.dao.CreateComment(claims.AppKey, params.VideoId, params.ActionType, params.CommentText, params.CommentId)
+
+	username, _ := svc.ctx.Get("username")
+	repond, err := svc.dao.CreateComment(username.(string), params.VideoId, params.ActionType, params.CommentText, params.CommentId)
 	if err != nil {
 		return nil, err
 	}
-	return &Response{StatusCode: 200, StatusMsg: "success"}, nil
+	return &CommentListResponse{Response: &Response{StatusCode: 0, StatusMsg: "not comment"},
+		CommentList: []model.Comment{repond}}, nil
 }
 
 func (svc *Service) GetCommentList(params *CommentListRequest) (*CommentListResponse, error) {
-	claims, err := app.ParseToken(params.Token)
-	if err != nil {
-		return nil, errors.New("token 不存在")
-	}
-
-	comments, err := svc.dao.GetCommentList(claims.AppKey, params.VideoId)
+	username, _ := svc.ctx.Get("username")
+	comments, err := svc.dao.GetCommentList(username.(string), params.VideoId)
 	if err != nil {
 		return nil, err
 	}

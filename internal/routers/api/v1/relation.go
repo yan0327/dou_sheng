@@ -28,7 +28,7 @@ func (r *Relation) RelationAction(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.RelationAction(&params)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.RelationAction err: %v", err)
@@ -51,7 +51,7 @@ func (r *Relation) FollowList(c *gin.Context) {
 		return
 	}
 	params.Token = c.Query("token")
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.FollowList(&params)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.FollowList err: %v", err)
@@ -74,7 +74,7 @@ func (r *Relation) FollowerList(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.FollowerList(&params)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.FollowerList err: %v", err)

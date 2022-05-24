@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"mime/multipart"
 	"os"
 	"os/exec"
@@ -17,11 +16,12 @@ type PublishRequest struct {
 	Token      string `form:"token"`
 	File       multipart.File
 	FileHeader *multipart.FileHeader
+	Title      string `form:"title"`
 }
 
 type PublishListRequest struct {
 	Token  string `form:"token"`
-	UserId uint32 `form:"user_id"`
+	UserId int64  `form:"user_id"`
 }
 
 type VideoListResponse struct {
@@ -30,15 +30,10 @@ type VideoListResponse struct {
 }
 
 func (svc *Service) PublishList(params *PublishListRequest) (*VideoListResponse, error) {
-	// claims, err := app.ParseToken(params.Token)
-	// if err != nil {
-	// 	return nil, errors.New("token 不存在")
-	// }
 	vedios, err := svc.dao.PublishList(params.UserId)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("FeedResponse", vedios)
 	respond := &VideoListResponse{
 		Response: &Response{
 			StatusCode: 0,
@@ -52,9 +47,11 @@ func (svc *Service) PublishList(params *PublishListRequest) (*VideoListResponse,
 func (svc *Service) Publish(params *PublishRequest) (*Response, error) {
 	claims, err := app.ParseToken(params.Token)
 	if err != nil {
-		return nil, errors.New("token 不存在")
+		return nil, errors.New("ParseToken is err")
 	}
-	fileName := upload.GetFileName(params.FileHeader.Filename, claims.AppKey)
+	username := claims.AppKey
+
+	fileName := upload.GetFileName(params.FileHeader.Filename, username)
 	if !upload.CheckContainExt(fileName) {
 		return nil, errors.New("file suffix is not supported.")
 	}
@@ -83,11 +80,10 @@ func (svc *Service) Publish(params *PublishRequest) (*Response, error) {
 	cmdArguments := []string{"-i", videodst, "-y", "-f", "image2", "-t", "1", "-s", "1364x900", imagedst}
 	cmd := exec.Command("ffmpeg", cmdArguments...)
 	_ = cmd.Run()
-	fmt.Println(imagedst)
 	imagePlayUrl := strings.Replace(playUrl, ".mp4", ".jpg", 1)
 	imagePlayUrl = strings.Replace(imagePlayUrl, "video", "image", 1)
 
-	err = svc.dao.Publish(claims.AppKey, playUrl, imagePlayUrl)
+	err = svc.dao.Publish(username, playUrl, imagePlayUrl, params.Title)
 	if err != nil {
 		return nil, err
 	}

@@ -19,7 +19,7 @@ func GetAuth(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	err := svc.CheckAuth(&param)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.CheckAuth err: %v", err)

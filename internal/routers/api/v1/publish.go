@@ -39,7 +39,7 @@ func (p *Publish) PublishVedio(c *gin.Context) {
 		response.ToErrorResponse(errcode.InvalidParams)
 		return
 	}
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	params.File, params.FileHeader = file, fileHeader
 	respond, err := svc.Publish(&params)
 	if err != nil {
@@ -62,7 +62,7 @@ func (p *Publish) PublishList(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.PublishList(&params)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.PublishList err: %v", err)

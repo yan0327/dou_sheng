@@ -28,7 +28,7 @@ func (cmt *Comment) CommentAction(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.CreateComment(&params)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.UserInfo err: %v", err)
@@ -51,7 +51,7 @@ func (cmt *Comment) CommentList(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.GetCommentList(&params)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.CommentList err: %v", err)

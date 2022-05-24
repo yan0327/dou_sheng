@@ -3,7 +3,7 @@ package model
 import "github.com/jinzhu/gorm"
 
 type Auth struct {
-	ID        uint32 `gorm:"primary_key" json:"id"`
+	ID        int64  `gorm:"primary_key" json:"id"`
 	AppKey    string `json:"app_key"`
 	AppSecret string `json:"app_secret"`
 }

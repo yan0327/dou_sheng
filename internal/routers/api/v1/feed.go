@@ -28,7 +28,7 @@ func (f *Feed) GetFeed(c *gin.Context) {
 		return
 	}
 
-	svc := service.New(c.Request.Context())
+	svc := service.New(c)
 	respond, err := svc.ReverseFeed(&param)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.Login err: %v", err)
