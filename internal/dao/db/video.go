@@ -21,7 +21,9 @@ func MakeVideos(db *gorm.DB) *videos {
 }
 
 func (v *videos) Create(video *model.Video) (*model.Video, error) {
-	res := v.db.Create(video)
+	res := v.db.
+		Select("Id", "AuthorId", "Title", "PlayUrl", "CoverUrl", "CreatedAt").
+		Create(video)
 	return video, res.Error
 }
 

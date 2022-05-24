@@ -21,7 +21,9 @@ func MakeUsers(db *gorm.DB) *users {
 }
 
 func (user *users) Create(u *model.User) (*model.User, error) {
-	res := user.db.Create(u)
+	res := user.db.
+		Select("Id", "Name", "Password").
+		Create(u)
 	return u, res.Error
 }
 

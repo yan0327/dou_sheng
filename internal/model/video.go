@@ -5,7 +5,7 @@ import (
 )
 
 type Video struct {
-	Id            int64     `json:"id,omitempty"`
+	Id            int64     `json:"id"`
 	AuthorId      int64     `json:"-"`
 	Author        *User     `json:"author"`
 	Title         string    `json:"title"`
