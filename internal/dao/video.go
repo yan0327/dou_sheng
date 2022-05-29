@@ -12,7 +12,7 @@ func (d *Dao) PublishList(userId int64) ([]model.Video, error) {
 	return video.PublishList(d.engine)
 }
 
-func (d *Dao) ReverseFeed(lastTime int64) ([]model.Video, error) {
+func (d *Dao) ReverseFeed(lastTime int64) ([]*model.Video, error) {
 	video := model.Video{LastTime: lastTime}
 	return video.ReverseFeed(d.engine, lastTime)
 }

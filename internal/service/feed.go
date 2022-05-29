@@ -10,8 +10,8 @@ type FeedRequest struct {
 }
 type FeedResponse struct {
 	*Response
-	VideoList []model.Video `json:"video_list,omitempty"`
-	NextTime  int64         `json:"next_time,omitempty"`
+	VideoList []*model.Video `json:"video_list,omitempty"`
+	NextTime  int64          `json:"next_time,omitempty"`
 }
 
 //返回倒数的视频流

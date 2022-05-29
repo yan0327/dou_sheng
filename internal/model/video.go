@@ -41,11 +41,12 @@ type Favorite struct {
 func (this Video) TableName() string {
 	return "tiktok_video"
 }
-func (this *Video) ReverseFeed(db *gorm.DB, lastTime int64) ([]Video, error) {
-	videos := make([]Video, 0)
+func (this *Video) ReverseFeed(db *gorm.DB, lastTime int64) ([]*Video, error) {
+	videos := make([]*Video, 0)
 	format := time.Unix(int64(time.Now().Unix()), 0).Format("2006-01-02 15:04:05")
 	err := db.Table("tiktok_video").Where("create_time <= ?", format).Order("create_time desc").Limit(20).Find(&videos).Error
 	for i := 0; i < len(videos); i++ {
+		// videos[i] = &Video{}
 		user := User{ID: videos[i].AuthorId}
 		videos[i].Author = user.VideoGetUserInfo(db)
 		db.Table("tiktok_video_like").Where("video_id = ?", videos[i].Id).Count(&videos[i].FavoriteCount)
