@@ -43,5 +43,3 @@ func (r *Cache) GetFollowerList(username string) ([]string, error) {
 	}
 	return cmd.Val(), nil
 }
-
-

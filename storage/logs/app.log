@@ -361,3 +361,4 @@
 2022/05/29 14:49:31 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653806971759504487}
 2022/05/29 14:50:55 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653807055166346342}
 2022/05/29 14:51:43 {"callers":["/home/ubuntu/go/src/simple_demo_douyin/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653807103476020657}
+2022/05/30 08:40:46 {"callers":["/home/ubuntu/go/src/test/tiktok_demon/main.go: 38 main.init.0"],"level":"info","message":"启动抖音APP服务","time":1653871246242150020}

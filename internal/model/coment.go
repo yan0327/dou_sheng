@@ -15,51 +15,40 @@ type Comment struct {
 	CreateDate string `json:"create_date" gorm:"column:create_time"`
 }
 
-// type CreateCommonParams struct {
-// 	Id         uint32 `gorm: "column:id"`
-// 	UserId     uint32 `gorm: "column:user_id"`
-// 	VideoId    uint32 `gorm: "column:video_id"`
-// 	User       *User
-// 	ActionType int8
-// 	Content    string `gorm: "column:content"`
-// 	CommentId  uint32
-// 	CreateDate string `gorm: "column:create_time"`
-// }
-
-func (this Comment) TableName() string {
+func (c Comment) TableName() string {
 	return "tiktok_video_comment"
 }
 
-func (this Comment) CreateComment(db *gorm.DB) (Comment, error) {
+func (c Comment) CreateComment(db *gorm.DB) (Comment, error) {
 	var err error
-	db.Table("tiktok_user").Where("username = ?", this.User.UserName).Find(this.User)
-	this.UserId = this.User.ID
-	if this.ActionType == 1 {
-		err := db.Omit("CreateDate").Create(&this).Error
+	db.Table("tiktok_user").Where("username = ?", c.User.UserName).Find(c.User)
+	c.UserId = c.User.ID
+	if c.ActionType == 1 {
+		err := db.Omit("CreateDate").Create(&c).Error
 		if err != nil {
 			return Comment{}, nil
 		}
 		user := User{
-			ID: this.UserId,
+			ID: c.UserId,
 		}
-		db.Where("id = ?", this.Id).Find(&this)
-		this.User = user.CommentGetUserInfo(db)
+		db.Where("id = ?", c.Id).Find(&c)
+		c.User = user.CommentGetUserInfo(db)
 		var isFollow int
-		db.Table("tiktok_relation").Where("user_id = ? AND follower_id = ? AND action_type = ?", this.User.ID, this.UserId, 1).Count(&isFollow)
+		db.Table("tiktok_relation").Where("user_id = ? AND follower_id = ? AND action_type = ?", c.User.ID, c.UserId, 1).Count(&isFollow)
 		if isFollow >= 1 {
-			this.User.IsFollow = true
+			c.User.IsFollow = true
 		}
-		return this, err
+		return c, err
 	} else {
-		err = db.Delete(&this, this.CommentId).Error
+		err = db.Delete(&c, c.CommentId).Error
 	}
 	return Comment{}, err
 }
 
-func (this Comment) GetCommentList(db *gorm.DB) ([]Comment, error) {
-	db.Table("tiktok_user").Where("username = ?", this.User.UserName).Find(this.User)
+func (c Comment) GetCommentList(db *gorm.DB) ([]Comment, error) {
+	db.Table("tiktok_user").Where("username = ?", c.User.UserName).Find(c.User)
 	comments := []Comment{}
-	err := db.Table("tiktok_video_comment").Where("video_id = ?", this.VideoId).Order("create_time desc").Find(&comments).Error
+	err := db.Table("tiktok_video_comment").Where("video_id = ?", c.VideoId).Order("create_time desc").Find(&comments).Error
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +58,7 @@ func (this Comment) GetCommentList(db *gorm.DB) ([]Comment, error) {
 		}
 		comments[i].User = user.CommentGetUserInfo(db)
 		var isFollow int
-		db.Table("tiktok_relation").Where("user_id = ? AND follower_id = ? AND action_type = ?", comments[i].User.ID, this.User.ID, 1).Count(&isFollow)
+		db.Table("tiktok_relation").Where("user_id = ? AND follower_id = ? AND action_type = ?", comments[i].User.ID, c.User.ID, 1).Count(&isFollow)
 		if isFollow >= 1 {
 			comments[i].User.IsFollow = true
 		}

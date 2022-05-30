@@ -19,7 +19,7 @@ type FollowListRequest struct {
 
 type FollowListRepond struct {
 	*Response
-	UserList []model.User `json:"user_list,omitempty"`
+	UserList []*model.User `json:"user_list,omitempty"`
 }
 
 //粉丝列表

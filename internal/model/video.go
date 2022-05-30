@@ -38,10 +38,10 @@ type Favorite struct {
 	UserName   string `gorm:"-"`
 }
 
-func (this Video) TableName() string {
+func (v Video) TableName() string {
 	return "tiktok_video"
 }
-func (this *Video) ReverseFeed(db *gorm.DB, lastTime int64) ([]*Video, error) {
+func (v *Video) ReverseFeed(db *gorm.DB, lastTime int64) ([]*Video, error) {
 	videos := make([]*Video, 0)
 	format := time.Unix(int64(time.Now().Unix()), 0).Format("2006-01-02 15:04:05")
 	err := db.Table("tiktok_video").Where("create_time <= ?", format).Order("create_time desc").Limit(20).Find(&videos).Error
@@ -58,12 +58,12 @@ func (this *Video) ReverseFeed(db *gorm.DB, lastTime int64) ([]*Video, error) {
 	return videos, nil
 }
 
-func (this *Video) PublishList(db *gorm.DB) ([]Video, error) {
+func (v *Video) PublishList(db *gorm.DB) ([]Video, error) {
 	// db.Table("tiktok_user").Where("username = ?", this.User.UserName).Find(this.User)
 	videos := make([]Video, 0)
 	// db.Table("tiktok_video").Select("*").Joins("inner join tiktok_video_like on tiktok_video.id = tiktok_video_like.video_id").Where("tiktok_video_like.user_id = ?", this.User.ID).Find(&videos)
-	db.Table("tiktok_video").Where("author_id = ?", this.User.ID).Find(&videos)
-	user := User{ID: this.User.ID}
+	db.Table("tiktok_video").Where("author_id = ?", v.User.ID).Find(&videos)
+	user := User{ID: v.User.ID}
 	author := user.VideoGetUserInfo(db)
 	for i := 0; i < len(videos); i++ {
 		videos[i].Author = author
@@ -73,14 +73,14 @@ func (this *Video) PublishList(db *gorm.DB) ([]Video, error) {
 	return videos, nil
 }
 
-func (this *VideoPush) Publish(db *gorm.DB) error {
+func (v *VideoPush) Publish(db *gorm.DB) error {
 	user := User{}
-	err := db.Table("tiktok_user").Where("username = ?", this.UserName).Find(&user).Error
+	err := db.Table("tiktok_user").Where("username = ?", v.UserName).Find(&user).Error
 	if err != nil {
 		return err
 	}
-	this.AuthorId = user.ID
-	err = db.Table("tiktok_video").Create(this).Error
+	v.AuthorId = user.ID
+	err = db.Table("tiktok_video").Create(v).Error
 	if err != nil {
 		return err
 	}
