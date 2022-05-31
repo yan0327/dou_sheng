@@ -43,7 +43,10 @@ func (v *videos) FindByTime(time int64) ([]*model.Video, error) {
 			return gdb.Select(`
 				*,
 				(SELECT COUNT(1) FROM tiktok_relation WHERE tiktok_relation.user_id = tiktok_user.id) AS follower_count,
-				(SELECT COUNT(1) FROM tiktok_relation WHERE tiktok_relation.follower_id = tiktok_user.id) AS follow_count
+				(SELECT COUNT(1) FROM tiktok_relation WHERE tiktok_relation.follower_id = tiktok_user.id) AS follow_count,
+				(SELECT COUNT(1) FROM tiktok_video_like WHERE tiktok_video_like.user_id = tiktok_user.id) AS favorite_count,
+				(SELECT COUNT(1) FROM tiktok_video_like WHERE tiktok_video_like.video_id IN
+					(SELECT tiktok_video.id FROM tiktok_video WHERE tiktok_video.author_id = tiktok_user.id)) AS total_favorited
 			`)
 		}).
 		Find(&res).Error
@@ -63,7 +66,10 @@ func (v *videos) FindByUser(userId int64) ([]*model.Video, error) {
 			return gdb.Select(`
 				*,
 				(SELECT COUNT(1) FROM tiktok_relation WHERE tiktok_relation.user_id = tiktok_user.id) AS follower_count,
-				(SELECT COUNT(1) FROM tiktok_relation WHERE tiktok_relation.follower_id = tiktok_user.id) AS follow_count
+				(SELECT COUNT(1) FROM tiktok_relation WHERE tiktok_relation.follower_id = tiktok_user.id) AS follow_count,
+				(SELECT COUNT(1) FROM tiktok_video_like WHERE tiktok_video_like.user_id = tiktok_user.id) AS favorite_count,
+				(SELECT COUNT(1) FROM tiktok_video_like WHERE tiktok_video_like.video_id IN
+					(SELECT tiktok_video.id FROM tiktok_video WHERE tiktok_video.author_id = tiktok_user.id)) AS total_favorited
 			`)
 		}).
 		Order("create_time DESC").
@@ -94,7 +100,10 @@ func (v *videos) FindFavoriteByUser(userId int64) ([]*model.Video, error) {
 			return gdb.Select(`
 				*,
 				(SELECT COUNT(1) FROM tiktok_relation WHERE tiktok_relation.user_id = tiktok_user.id) AS follower_count,
-				(SELECT COUNT(1) FROM tiktok_relation WHERE tiktok_relation.follower_id = tiktok_user.id) AS follow_count
+				(SELECT COUNT(1) FROM tiktok_relation WHERE tiktok_relation.follower_id = tiktok_user.id) AS follow_count,
+				(SELECT COUNT(1) FROM tiktok_video_like WHERE tiktok_video_like.user_id = tiktok_user.id) AS favorite_count,
+				(SELECT COUNT(1) FROM tiktok_video_like WHERE tiktok_video_like.video_id IN
+					(SELECT tiktok_video.id FROM tiktok_video WHERE tiktok_video.author_id = tiktok_user.id)) AS total_favorited
 			`)
 		}).
 		Order("create_time DESC").
