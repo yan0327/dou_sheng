@@ -22,7 +22,7 @@ type CommentActionRequest struct {
 	VideoId     int64  `form:"video_id" binding:"required"`
 	ActionType  int    `form:"action_type" binding:"required"`
 	CommentText string `form:"comment_text"`
-	CommentId   int64  `from:"comment_id"`
+	CommentId   int64  `form:"comment_id"`
 }
 
 type CommentListResponse struct {
