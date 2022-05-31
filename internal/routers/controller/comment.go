@@ -60,16 +60,17 @@ func (cm *CommentController) CommentAction(c *gin.Context) {
 		comment, err := cm.csrv.Publish(req.VideoId, uid.(int64), req.CommentText)
 		if err != nil {
 			global.Logger.Errorf(c, "新增评论错误: %v\n", err.Details())
-			api.RespWithErr(c, errcode.ServerError.WithDetails(err.Error()))
+			api.RespWithErr(c, err)
 			return
 		}
 		api.RespWithData(c, CommentActionResponse{
 			comment,
 		})
 	} else if req.ActionType == ActionDeleteComment {
-		err := cm.csrv.Delete(req.CommentId)
+		err := cm.csrv.Delete(req.CommentId, uid.(int64))
 		if err != nil {
-			api.RespWithErr(c, errcode.ServerError.WithDetails(err.Error()))
+			global.Logger.Errorf(c, "删除评论错误: %v\n", err.Details())
+			api.RespWithErr(c, err)
 			return
 		}
 		api.RespOK(c)

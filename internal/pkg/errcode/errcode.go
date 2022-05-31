@@ -71,6 +71,8 @@ func (e *Error) HTTPStatus() int {
 		fallthrough
 	case UnauthorizedTokenTimeout.Code():
 		return http.StatusUnauthorized
+	case PermissionDenied.code:
+		return http.StatusForbidden
 	case TooManyRequests.Code():
 		return http.StatusTooManyRequests
 	}

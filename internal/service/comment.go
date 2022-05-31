@@ -8,7 +8,7 @@ import (
 
 type CommentSrv interface {
 	Publish(videoId int64, userId int64, comment string) (*model.Comment, *errcode.Error)
-	Delete(commentId int64) *errcode.Error
+	Delete(commentId int64, userId int64) *errcode.Error
 	List(videoId int64) ([]*model.Comment, *errcode.Error)
 }
 
@@ -32,8 +32,15 @@ func (srv *CommentService) Publish(videoId int64, userId int64, comment string) 
 	return c, nil
 }
 
-func (srv *CommentService) Delete(commentId int64) *errcode.Error {
-	err := srv.db.Delete(commentId)
+func (srv *CommentService) Delete(commentId int64, userId int64) *errcode.Error {
+	c, err := srv.db.FindByIdUser(commentId, userId)
+	if err != nil {
+		return errcode.ServerError.WithDetails(err.Error())
+	}
+	if c == nil {
+		return errcode.PermissionDenied
+	}
+	err = srv.db.Delete(commentId)
 	if err != nil {
 		return errcode.ServerError.WithDetails(err.Error())
 	}
