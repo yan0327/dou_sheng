@@ -12,7 +12,7 @@ App:
   LogFileName: app
   LogFileExt: .log
   UploadSavePath: /Users/xuqing/Desktop/upload
-  UploadServerUrl: http://127.0.0.1:8080/upload
+  UploadServerUrl: http://10.0.2.2:8080/douyin/video/%s
   UploadImageMaxSize: 512  # MB
   UploadImageAllowExts:
     - .jpg
