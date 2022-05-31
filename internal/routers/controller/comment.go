@@ -35,11 +35,13 @@ type CommentActionResponse struct {
 
 type CommentController struct {
 	csrv service.CommentSrv
+	usrv service.UserSrv
 }
 
 func MakeCommentController(f *dao.DaoFactory) *CommentController {
 	return &CommentController{
 		csrv: service.MakeCommentSrv(f.Comment()),
+		usrv: service.MakeUserSrv(f.User(), f.Relation()),
 	}
 }
 
@@ -63,6 +65,13 @@ func (cm *CommentController) CommentAction(c *gin.Context) {
 			api.RespWithErr(c, err)
 			return
 		}
+		user, err := cm.usrv.GetById(uid.(int64))
+		if err != nil {
+			global.Logger.Errorf(c, "获取用户信息错误: %v\n", err.Details())
+			api.RespWithErr(c, err)
+			return
+		}
+		comment.User = user
 		api.RespWithData(c, CommentActionResponse{
 			comment,
 		})
