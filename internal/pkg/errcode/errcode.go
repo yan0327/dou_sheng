@@ -46,7 +46,9 @@ func (e *Error) Details() []string {
 
 func (e *Error) WithDetails(details ...string) *Error {
 	newError := *e
-	newError.details = []string{}
+	if newError.details == nil {
+		newError.details = []string{}
+	}
 	for _, d := range details {
 		newError.details = append(newError.details, d)
 	}
