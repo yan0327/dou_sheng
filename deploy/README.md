@@ -36,15 +36,21 @@ cp configs/* $(docker volume inspect douyin-config | grep Mountpoint | awk '{pri
       -v douyin-storage:/data \
       minio/minio server /data
     ```
-   3. 启动 MySQL 数据库（这里的环境变量需与配置文件一致） 
+   3. 为 Minio 创建 Bucket（Bucket 名称需与配置文件一致）
+   ```bash
+   docker run --net douyin-net --rm -it --entrypoint=bin/sh minio/mc
+   mc config host add minio http://douyin-minio:9000 minioadmin minioadmin
+   mc mb minio/<Bucket名称>
+   ```
+   4. 启动 MySQL 数据库（这里的环境变量需与配置文件一致） 
     ```bash
     docker run -d --net douyin-net --name douyin-db \
-      -e MYSQL_DATABASE=tiktok \
-      -e MYSQL_ROOT_PASSWORD=123456 \
+      -e MYSQL_DATABASE=<数据库名> \
+      -e MYSQL_ROOT_PASSWORD=<ROOT用户密码> \
       -v <项目根绝对目录>/third_party/sql:/docker-entrypoint-initdb.d \
       mysql
     ```
-   4. 启动应用服务器
+   5. 启动应用服务器
     ```bash
     docker run -d --net douyin-net \
       --name douyin-server \

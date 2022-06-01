@@ -8,7 +8,7 @@ COPY . /app
 RUN go get -d -v ./...
 RUN go build -o /output/server main.go
 
-FROM alpine
+FROM linuxserver/ffmpeg
 ENV TZ Asia/Shanghai
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /etc/ssl/certs /etc/ssl/certs
