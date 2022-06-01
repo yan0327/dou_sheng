@@ -16,4 +16,5 @@ COPY --from=builder /output/server /app/server
 COPY --from=builder /app/configs /app/configs
 EXPOSE 8080
 VOLUME /app/configs
-CMD ["/app/server"]
+WORKDIR /app
+ENTRYPOINT ["./server"]
