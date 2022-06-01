@@ -47,6 +47,7 @@ cp configs/* $(docker volume inspect douyin-config | grep Mountpoint | awk '{pri
     docker run -d --net douyin-net --name douyin-db \
       -e MYSQL_DATABASE=<数据库名> \
       -e MYSQL_ROOT_PASSWORD=<ROOT用户密码> \
+      -e TZ=Asia/Shanghai \
       -v <项目根绝对目录>/third_party/sql:/docker-entrypoint-initdb.d \
       mysql
     ```
