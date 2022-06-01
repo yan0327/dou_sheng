@@ -18,7 +18,7 @@ docker volume create douyin-storage
 docker network create douyin-net
 ```
 
-4. 拷贝到 `douyin-config` volume 下，并按需修改
+4. 拷贝配置文件到 `douyin-config` volume 下，并按需修改
 ```bash
 cp configs/* $(docker volume inspect douyin-config | grep Mountpoint | awk '{print $2}' | awk '{gsub("[,\"]", ""); print $0}')
 ```
